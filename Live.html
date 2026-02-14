@@ -1,101 +1,86 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IPTV Player - Minh Châu</title>
+    <title>TV Smart Filter</title>
     <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        body { margin: 0; background: #000; color: #fff; font-family: Arial, sans-serif; display: flex; height: 100vh; overflow: hidden; }
-        #sidebar { width: 250px; background: #111; overflow-y: auto; border-right: 1px solid #333; transition: 0.3s; }
-        .channel-item { padding: 12px; border-bottom: 1px solid #222; cursor: pointer; font-size: 14px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-        .channel-item:hover { background: #333; }
-        .channel-item.active { background: #e50914; color: #fff; font-weight: bold; }
-        #main-player { flex: 1; position: relative; background: #000; }
-        video { width: 100%; height: 100%; outline: none; }
-        #toggle-menu { position: absolute; top: 10px; left: 10px; z-index: 10; background: rgba(0,0,0,0.5); border: none; color: white; padding: 10px; cursor: pointer; border-radius: 5px; }
-        @media (max-width: 600px) { #sidebar { width: 150px; font-size: 12px; } }
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+        #menu { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 100; overflow-y: scroll; }
+        .ch { padding: 18px; border-bottom: 1px solid #333; font-size: 22px; cursor: pointer; }
+        video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
+        #back-btn { position: fixed; bottom: 20px; right: 20px; z-index: 200; background: #e50914; color: #fff; border: none; padding: 15px; border-radius: 5px; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
-    <div id="sidebar">
-        <div style="padding: 15px; font-weight: bold; color: #ff9800;">DANH SÁCH KÊNH</div>
-        <div id="channel-list">Đang tải kênh...</div>
+    <div id="menu">
+        <div style="padding: 20px; color: #00ff00; font-weight: bold; border-bottom: 2px solid #222;">
+            📺 DANH SÁCH KÊNH ĐÃ LỌC
+        </div>
+        <div id="list">Đang lọc kênh...</div>
     </div>
 
-    <div id="main-player">
-        <button id="toggle-menu">☰ Danh sách</button>
-        <video id="video" controls autoplay playsinline muted></video>
-    </div>
+    <button id="back-btn" onclick="showMenu()">ĐỔI KÊNH</button>
+    <video id="v" controls playsinline></video>
 
     <script>
-        // CHÈN LINK FILE M3U CỦA NGƯỜI KHÁC VÀO ĐÂY
-        const M3U_URL = 'https://raw.githubusercontent.com/minhtan001/IPTV-Auto/refs/heads/playlists/all.m3u'; 
+        const M3U_URL = 'https://raw.githubusercontent.com/minhtan001/IPTV-Auto/refs/heads/playlists/all.m3u';
+        
+        // --- CẤU HÌNH BỘ LỌC TẠI ĐÂY ---
+        // Chỉ hiện các kênh có tên chứa một trong các chữ dưới đây (viết thường)
+        const MY_KEYWORDS = ['vs']; 
 
-        const video = document.getElementById('video');
-        const channelListContainer = document.getElementById('channel-list');
-        const sidebar = document.getElementById('sidebar');
-        const toggleBtn = document.getElementById('toggle-menu');
+        const v = document.getElementById('v');
+        const list = document.getElementById('list');
+        const menu = document.getElementById('menu');
+        const btn = document.getElementById('back-btn');
 
-        // Ẩn/hiện danh sách kênh cho gọn
-        toggleBtn.onclick = () => {
-            sidebar.style.display = sidebar.style.display === 'none' ? 'block' : 'none';
-        };
-
-        // Hàm đọc và xử lý file M3U
-        async function loadPlaylist() {
+        async function load() {
             try {
-                const response = await fetch(M3U_URL);
-                const data = await response.text();
-                const lines = data.split('\n');
-                const channels = [];
-
+                const res = await fetch(M3U_URL);
+                const text = await res.text();
+                const lines = text.split('\n');
+                let html = '';
+                let count = 0;
+                
                 for (let i = 0; i < lines.length; i++) {
-                    if (lines[i].startsWith('#EXTINF')) {
-                        const name = lines[i].split(',')[1] || "Kênh không tên";
-                        const url = lines[i+1] ? lines[i+1].trim() : null;
-                        if (url && url.startsWith('http')) {
-                            channels.push({ name, url });
+                    if (lines[i].includes('#EXTINF')) {
+                        let name = lines[i].split(',')[1] || "";
+                        let url = lines[i+1]?.trim();
+                        
+                        // KIỂM TRA BỘ LỌC
+                        const nameLower = name.toLowerCase();
+                        const isMatch = MY_KEYWORDS.some(key => nameLower.includes(key));
+
+                        if (isMatch && url && url.startsWith('http')) {
+                            html += `<div class="ch" onclick="play('${url}')">${name}</div>`;
+                            count++;
                         }
                     }
                 }
-
-                renderChannels(channels);
-            } catch (err) {
-                channelListContainer.innerHTML = "Lỗi tải danh sách!";
-                console.error(err);
-            }
+                list.innerHTML = html || '<div class="ch">Không tìm thấy kênh phù hợp!</div>';
+            } catch (e) { list.innerHTML = '<div class="ch">Lỗi kết nối link M3U!</div>'; }
         }
 
-        function renderChannels(channels) {
-            channelListContainer.innerHTML = '';
-            channels.forEach((ch, index) => {
-                const div = document.createElement('div');
-                div.className = 'channel-item';
-                div.innerText = ch.name;
-                div.onclick = () => playStream(ch.url, div);
-                channelListContainer.appendChild(div);
-            });
-        }
-
-        function playStream(url, element) {
-            // Xóa active cũ
-            document.querySelectorAll('.channel-item').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
-
+        function play(url) {
+            menu.style.display = 'none';
+            btn.style.display = 'block';
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(url);
-                hls.attachMedia(video);
-                hls.on(Hls.Events.MANIFEST_PARSED, () => video.play());
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                video.src = url;
-                video.play();
-            }
+                hls.attachMedia(v);
+            } else { v.src = url; }
+            v.play();
         }
 
-        loadPlaylist();
+        function showMenu() {
+            v.pause();
+            menu.style.display = 'block';
+            btn.style.display = 'none';
+        }
+
+        load();
     </script>
 </body>
 </html>
