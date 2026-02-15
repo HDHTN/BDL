@@ -1,26 +1,25 @@
 name: Update IPTV List
 on:
   schedule:
-    - cron: '0 0 * * *' # Chạy tự động lúc 00:00 mỗi ngày
-  workflow_dispatch: # Nút bấm để chạy tay khi cần
+    - cron: '0 0 * * *' # Tự động chạy lúc 12h đêm
+  workflow_dispatch: # Nút bấm để bạn chạy tay khi cần
 
 jobs:
   filter:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      
-      - name: Lay va loc file
+      - name: Lay va loc file theo tu khoa
         run: |
-          # 1. Tải file gốc về máy chủ GitHub
-          curl -L "https://byvn.net/hxcv-iptv" > raw.m3u
+          # 1. Tải file khổng lồ về (Bạn có thể thay link trong ngoặc kép này)
+          curl -L "https://raw.githubusercontent.com/minhtan001/IPTV-Auto/refs/heads/playlists/all.m3u" > raw.m3u
           
-          # 2. Tạo file mới với tiêu đề chuẩn
+          # 2. Tạo file mới
           echo "#EXTM3U" > hfb_list.m3u
           
-          # 3. Lọc kênh: Tìm dòng chứa từ khóa, lấy thêm 1 dòng địa chỉ phía dưới (-A 1)
-          # Bạn muốn thêm kênh nào thì viết thêm vào giữa các dấu gạch đứng |
-          grep -E "VTV|VTC|Bóng đá|Sport|Cartoon|HBO" -A 1 raw.m3u >> hfb_list.m3u
+          # 3. LỌC THEO TỪ KHÓA (Bạn thích từ nào thì viết thêm vào sau dấu | )
+          # Ở đây tôi đang để: vtv, bóng đá, sport, cartoon, hbo, phim
+          grep -Ei "vtv|bong da|the thao|sport|cartoon|thieu nhi|hbo|phim|vieon" -A 1 raw.m3u >> hfb_list.m3u
           
       - name: Day file len lai GitHub
         run: |
