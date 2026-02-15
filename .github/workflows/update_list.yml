@@ -2,7 +2,8 @@ name: Update IPTV List
 on:
   workflow_dispatch:
   schedule:
-    - cron: '0 0 * * *'
+    # Đã sửa thành chạy 20 phút 1 lần
+    - cron: '*/20 * * * *'
 
 jobs:
   filter:
