@@ -16,7 +16,7 @@
         }
         .channel-box:active { background: #444; }
         
-        /* Giao diện xem video (Đã ẩn nút quay lại) */
+        /* Giao diện xem video (Toàn màn hình, không có nút Back) */
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
     </style>
@@ -36,6 +36,7 @@
     </div>
 
     <script>
+        // Nguồn file M3U của bạn
         var sourceUrl = 'https://raw.githubusercontent.com/HDHTN/BDL/main/hfb_list.m3u';
         
         var listScreen = document.getElementById('list-screen');
@@ -46,7 +47,7 @@
         var video = document.getElementById('tv-screen');
         var videoSource = document.getElementById('video-source');
 
-        // --- PHẦN TẢI DANH SÁCH ---
+        // --- PHẦN TẢI DANH SÁCH TỪ GITHUB ---
         function fetchChannels() {
             var finalUrl = sourceUrl + '?t=' + new Date().getTime();
             fetch(finalUrl)
@@ -62,6 +63,7 @@
                 });
         }
 
+        // --- PHẦN XỬ LÝ LỌC KÊNH ---
         function processData(text) {
             var lines = text.split('\n');
             var htmlOutput = '';
@@ -92,44 +94,44 @@
             }
         }
 
-        // --- PHẦN PHÁT VIDEO ĐÃ TÍCH HỢP PROXY HTTPS ---
+        // --- PHẦN PHÁT VIDEO & LƯA TRÌNH DUYỆT TV ---
         function playChannel(streamUrl) {
+            // Đổi giao diện sang chế độ xem
             listScreen.style.display = 'none';
             playerScreen.style.display = 'block';
 
-            // Dọn dẹp sạch sẽ luồng cũ
+            // Dọn dẹp sạch sẽ luồng cũ để TV không bị treo
             videoSource.src = "";
             video.removeAttribute('src'); 
 
-            // Kiểm tra: Nếu link là HTTP (không bảo mật) như Socolive
-            if (streamUrl.indexOf('http://') === 0) {
-                // Sử dụng máy chủ Proxy (corsproxy.io) để bọc link lại thành HTTPS
-                var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(streamUrl);
-                video.src = proxyUrl; 
-            } else {
-                // Nếu là link HTTPS chuẩn (như VTV) thì phát bình thường qua thẻ Source
-                videoSource.src = streamUrl;
+            // THỦ THUẬT: Nếu link chứa đuôi .php, gắn thêm đuôi ảo #.m3u8 vào cuối
+            // Việc này giúp thẻ <source> của TV tưởng đây là link chuẩn và chịu đọc
+            if (streamUrl.indexOf('.php') !== -1) {
+                streamUrl = streamUrl + '#.m3u8';
             }
+
+            // Đẩy link vào thẻ source chuẩn
+            videoSource.src = streamUrl;
             
-            // Bắt buộc tải và phát luồng mới
+            // Bắt buộc trình duyệt tải lại luồng video và phát
             video.load();
             var playPromise = video.play();
             
-            // Bắt lỗi nếu TV đòi người dùng phải tự bấm nút Play
+            // Bắt lỗi nếu TV đòi người dùng phải tự bấm nút Play trên remote
             if (playPromise !== undefined) {
                 playPromise.catch(function(error) {
-                    console.log("TV yêu cầu tương tác để phát.");
+                    console.log("TV yêu cầu tương tác bằng remote để phát.");
                 });
             }
         }
 
-        // Tự động phát lại nếu bị ngắt quãng (Mã chống giật lag mạng yếu)
+        // --- TỰ ĐỘNG PHÁT LẠI NẾU BỊ RỚT MẠNG ---
         video.addEventListener('error', function() {
             if (playerScreen.style.display === 'block') {
                 setTimeout(function() {
                     video.load();
                     video.play();
-                }, 5000);
+                }, 5000); // Đợi 5 giây rồi thử lại
             }
         }, true);
 
