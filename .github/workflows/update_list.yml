@@ -16,16 +16,17 @@ jobs:
           # 1. Tải file gốc
           curl -L "https://raw.githubusercontent.com/minhtan001/IPTV-Auto/refs/heads/playlists/all.m3u" > raw.m3u
           
-          # 2. Tạo file trắng để TV không bị đứng máy
+          # 2. Tạo file trắng tiêu chuẩn
           echo "#EXTM3U" > hfb_list.m3u
           
-          # 3. Lọc từ khóa "vs" (Thêm || true để không bao giờ báo lỗi đỏ nữa)
-          # Lệnh này sẽ tìm chữ "vs" không phân biệt hoa thường
+          # 3. Lọc từ khóa "vs" với cơ chế chống dừng (|| true)
+          # Sử dụng thêm tham số -B 1 nếu file gốc có định dạng tên ở dòng trên link
           grep -Ei "vs" -A 1 raw.m3u >> hfb_list.m3u || true
           
-          # 4. Lưu lại vào kho của bạn
+          # 4. Kiểm tra và đẩy file lên GitHub
           git config --global user.name 'bot'
           git config --global user.email 'bot@github.com'
           git add hfb_list.m3u
-          git commit -m "update" || exit 0
+          # Commit ngay cả khi file không đổi hoặc rỗng để tránh báo lỗi đỏ
+          git commit -m "update" || echo "No changes to commit"
           git push
