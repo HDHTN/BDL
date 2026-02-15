@@ -1,74 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Lite</title>
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
+        /* Danh sách kênh toàn màn hình */
+        #menu { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 10; overflow-y: auto; }
+        .ch { padding: 20px; border-bottom: 1px solid #333; font-size: 20px; cursor: pointer; }
+        .ch:active { background: #333; }
+        /* Video phát toàn màn hình */
+        video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; display: none; background: #000; }
+        /* Nút quay lại danh sách */
+        #back { position: fixed; top: 10px; right: 10px; z-index: 20; background: rgba(255,0,0,0.7); color: #fff; border: none; padding: 10px 15px; border-radius: 5px; display: none; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div id="menu">
+        <div style="padding: 20px; color: #00ff00; font-weight: bold; border-bottom: 2px solid #222;">DANH SÁCH KÊNH</div>
+        <div id="list">Đang tải...</div>
+    </div>
+
+    <button id="back" onclick="showMenu()">ĐỔI KÊNH</button>
+    <video id="v" controls playsinline></video>
+
     <script>
+        // Link file M3U đã lọc trong kho của bạn
         const M3U_URL = 'https://raw.githubusercontent.com/HDHTN/BDL/main/hfb_list.m3u';
         
         const v = document.getElementById('v');
         const list = document.getElementById('list');
         const menu = document.getElementById('menu');
-        const btn = document.getElementById('back-btn');
+        const backBtn = document.getElementById('back');
 
         async function load() {
             try {
-                // Thêm cache-control để ép tải file mới nhất
+                // Thêm timestamp để tránh lưu cache cũ trên TV
                 const res = await fetch(M3U_URL + '?t=' + Date.now());
                 const text = await res.text();
-                const lines = text.split(/\r?\n/); // Xử lý cả xuống dòng kiểu Windows và Linux
+                const lines = text.split('\n');
                 let html = '';
                 
                 for (let i = 0; i < lines.length; i++) {
-                    let line = lines[i].trim();
-                    if (line.startsWith('#EXTINF')) {
+                    if (lines[i].includes('#EXTINF')) {
                         // Lấy tên kênh sau dấu phẩy
-                        let name = line.split(',')[1] || "Kênh không tên";
+                        let name = lines[i].split(',')[1] || "Kênh " + i;
+                        // Lấy link ở dòng kế tiếp
+                        let url = lines[i+1]?.trim();
                         
-                        // QUAN TRỌNG: Tìm link http ở các dòng tiếp theo (phòng trường hợp có dòng trống)
-                        let url = "";
-                        for (let j = i + 1; j < i + 5 && j < lines.length; j++) {
-                            if (lines[j].trim().startsWith('http')) {
-                                url = lines[j].trim();
-                                break;
-                            }
-                        }
-
-                        if (url) {
-                            html += `<div class="ch" onclick="play('${url}')">${name}</div>`;
+                        if (url && url.startsWith('http')) {
+                            html += `<div class="ch" onclick="play('${url}')">${name.trim()}</div>`;
                         }
                     }
                 }
-                list.innerHTML = html || '<div class="ch">Danh sách trống! (Kiểm tra nội dung file hfb_list.m3u)</div>';
-            } catch (e) { 
-                list.innerHTML = '<div class="ch">Lỗi kết nối M3U!</div>'; 
-            }
+                list.innerHTML = html || '<div class="ch">Không tìm thấy kênh.</div>';
+            } catch (e) { list.innerHTML = '<div class="ch">Lỗi kết nối M3U!</div>'; }
         }
 
         function play(url) {
             menu.style.display = 'none';
-            btn.style.display = 'block';
+            v.style.display = 'block';
+            backBtn.style.display = 'block';
             
-            // Xử lý HLS cho TV Sony và iPhone
             if (Hls.isSupported()) {
                 const hls = new Hls();
                 hls.loadSource(url);
                 hls.attachMedia(v);
-                hls.on(Hls.Events.MANIFEST_PARSED, function() {
-                    v.play().catch(() => {
-                        console.log("Cần bấm nút Play để phát");
-                    });
-                });
-                // Xử lý lỗi nếu link stream chết
-                hls.on(Hls.Events.ERROR, function (event, data) {
-                    if (data.fatal) { alert("Link này hiện không xem được!"); }
-                });
-            } else if (v.canPlayType('application/vnd.apple.mpegurl')) {
-                v.src = url;
-                v.play();
+                hls.on(Hls.Events.MANIFEST_PARSED, () => v.play());
+            } else { 
+                // Hỗ trợ trực tiếp cho iPhone (Safari)
+                v.src = url; 
+                v.play(); 
             }
         }
 
         function showMenu() {
             v.pause();
+            v.style.display = 'none';
+            backBtn.style.display = 'none';
             menu.style.display = 'block';
-            btn.style.display = 'none';
         }
 
         load();
     </script>
+</body>
+</html>
