@@ -4,11 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TV Siêu Nhẹ</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
-        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; }
+        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; overflow-x: hidden; }
         
-        /* Giao diện danh sách kênh */
+        /* Giao diện danh sách kênh (Giữ nguyên như cũ) */
         #list-screen { padding: 10px; padding-bottom: 50px; }
         .channel-box { 
             background: #222; margin-bottom: 12px; padding: 18px; 
@@ -17,11 +16,11 @@
         }
         .channel-box:active { background: #444; }
         
-        /* Giao diện xem video */
+        /* Giao diện xem video (Sửa lại theo mã của bạn) */
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
-        video { width: 100%; height: 100%; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
         
-        /* Nút quay lại (To và dễ bấm trên TV) */
+        /* Nút quay lại */
         #back-btn { 
             position: fixed; top: 20px; left: 20px; padding: 15px 30px; 
             font-size: 20px; font-weight: bold; background: rgba(0,0,0,0.8); 
@@ -39,24 +38,27 @@
 
     <div id="player-screen">
         <button id="back-btn" onclick="stopAndBack()">⬅ QUAY LẠI</button>
-        <video id="tv-screen" controls playsinline></video>
+        <video id="tv-screen" controls playsinline autoplay>
+            <source id="video-source" src="" type="application/x-mpegURL">
+            Trình duyệt TV của bạn quá cũ, không hỗ trợ xem video.
+        </video>
     </div>
 
     <script>
-        // --- CHỈ ĐỌC DUY NHẤT FILE NÀY ---
         var sourceUrl = 'https://raw.githubusercontent.com/HDHTN/BDL/main/hfb_list.m3u';
         
         var listScreen = document.getElementById('list-screen');
         var playerScreen = document.getElementById('player-screen');
         var channelsContainer = document.getElementById('channels-container');
         var statusText = document.getElementById('status-text');
+        
+        // Khai báo biến Video theo chuẩn mới
         var video = document.getElementById('tv-screen');
-        var hlsPlayer;
+        var videoSource = document.getElementById('video-source');
 
-        // 1. Hàm tải file M3U (Chống cache bằng tham số thời gian)
+        // --- PHẦN DANH SÁCH (GIỮ NGUYÊN 100%) ---
         function fetchChannels() {
             var finalUrl = sourceUrl + '?t=' + new Date().getTime();
-            
             fetch(finalUrl)
                 .then(function(response) {
                     if (!response.ok) throw new Error('Từ chối kết nối');
@@ -70,7 +72,6 @@
                 });
         }
 
-        // 2. Hàm "Lọc rác" và trích xuất kênh
         function processData(text) {
             var lines = text.split('\n');
             var htmlOutput = '';
@@ -79,23 +80,19 @@
 
             for (var i = 0; i < lines.length; i++) {
                 var line = lines[i].trim();
-                
-                // Nếu là dòng chứa tên kênh
                 if (line.indexOf('#EXTINF') === 0) {
                     var commaIndex = line.indexOf(',');
                     if (commaIndex !== -1) {
                         tempName = line.substring(commaIndex + 1).trim();
                     }
                 } 
-                // Nếu là dòng chứa link video (Bỏ qua mọi dòng rác == hoặc -- ở giữa)
                 else if (line.indexOf('http') === 0) {
                     htmlOutput += '<div class="channel-box" onclick="playChannel(\'' + line + '\')">' + tempName + '</div>';
-                    tempName = "Kênh không tên"; // Reset tên để chuẩn bị cho kênh tiếp theo
+                    tempName = "Kênh không tên"; 
                     count++;
                 }
             }
 
-            // Hiển thị kết quả
             if (count > 0) {
                 statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' kênh</span>';
                 statusText.style.textAlign = 'left';
@@ -105,38 +102,40 @@
             }
         }
 
-        // 3. Hàm phát video
+        // --- PHẦN PHÁT VIDEO (ĐÃ SỬA THEO MÃ CỦA BẠN) ---
         function playChannel(streamUrl) {
-            // Chuyển màn hình
             listScreen.style.display = 'none';
             playerScreen.style.display = 'block';
 
-            if (Hls.isSupported()) {
-                if (hlsPlayer) hlsPlayer.destroy(); // Dọn dẹp luồng cũ
-                hlsPlayer = new Hls();
-                hlsPlayer.loadSource(streamUrl);
-                hlsPlayer.attachMedia(video);
-                hlsPlayer.on(Hls.Events.MANIFEST_PARSED, function() {
-                    video.play();
-                });
-            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
-                // Chạy mượt trên iPhone/iPad
-                video.src = streamUrl;
-                video.play();
-            }
+            // Gắn link vào thẻ <source> thay vì gắn trực tiếp vào src của video
+            videoSource.src = streamUrl;
+            
+            // Bắt buộc phải gọi lệnh load() khi thay đổi thẻ <source>
+            video.load();
+            video.play();
         }
 
-        // 4. Hàm quay lại danh sách
         function stopAndBack() {
             video.pause();
-            video.src = "";
-            if (hlsPlayer) hlsPlayer.destroy();
+            videoSource.src = ""; // Xóa link
+            video.load(); // Làm sạch luồng
             
             playerScreen.style.display = 'none';
             listScreen.style.display = 'block';
         }
 
-        // Tự động chạy khi mở file
+        // Tự động phát lại nếu bị ngắt quãng (Mã chống giật lag mạng yếu của bạn)
+        video.addEventListener('error', function() {
+            // Chỉ chạy reload nếu đang ở màn hình xem video
+            if (playerScreen.style.display === 'block') {
+                setTimeout(function() {
+                    video.load();
+                    video.play();
+                }, 5000);
+            }
+        }, true);
+
+        // Khởi động
         fetchChannels();
     </script>
 </body>
