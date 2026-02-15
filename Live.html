@@ -1,36 +1,7 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>TV Smart Filter</title>
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
-    <style>
-        body { margin: 0; background: #000; color: #fff; font-family: sans-serif; }
-        #menu { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #111; z-index: 100; overflow-y: scroll; }
-        .ch { padding: 18px; border-bottom: 1px solid #333; font-size: 22px; cursor: pointer; }
-        video { position: fixed; top: 0; left: 0; width: 100%; height: 100%; }
-        #back-btn { position: fixed; bottom: 20px; right: 20px; z-index: 200; background: #e50914; color: #fff; border: none; padding: 15px; border-radius: 5px; font-weight: bold; display: none; }
-    </style>
-</head>
-<body>
-
-    <div id="menu">
-        <div style="padding: 20px; color: #00ff00; font-weight: bold; border-bottom: 2px solid #222;">
-            📺 DANH SÁCH KÊNH ĐÃ LỌC
-        </div>
-        <div id="list">Đang lọc kênh...</div>
-    </div>
-
-    <button id="back-btn" onclick="showMenu()">ĐỔI KÊNH</button>
-    <video id="v" controls playsinline></video>
-
     <script>
+        // Link này trỏ thẳng tới file Bot đã lọc
         const M3U_URL = 'https://raw.githubusercontent.com/HDHTN/BDL/main/hfb_list.m3u';
         
-        // --- CẤU HÌNH BỘ LỌC TẠI ĐÂY ---
-        // Chỉ hiện các kênh có tên chứa một trong các chữ dưới đây (viết thường)
-        const MY_KEYWORDS = ['vs']; 
-
         const v = document.getElementById('v');
         const list = document.getElementById('list');
         const menu = document.getElementById('menu');
@@ -38,29 +9,25 @@
 
         async function load() {
             try {
-                const res = await fetch(M3U_URL);
+                // Thêm timestamp để TV luôn tải bản mới nhất, không dùng bản cũ trong bộ nhớ
+                const res = await fetch(M3U_URL + '?t=' + new Date().getTime());
                 const text = await res.text();
                 const lines = text.split('\n');
                 let html = '';
-                let count = 0;
                 
                 for (let i = 0; i < lines.length; i++) {
                     if (lines[i].includes('#EXTINF')) {
-                        let name = lines[i].split(',')[1] || "";
+                        let name = lines[i].split(',')[1] || "Kênh không tên";
                         let url = lines[i+1]?.trim();
-                        
-                        // KIỂM TRA BỘ LỌC
-                        const nameLower = name.toLowerCase();
-                        const isMatch = MY_KEYWORDS.some(key => nameLower.includes(key));
 
-                        if (isMatch && url && url.startsWith('http')) {
+                        // Không cần lọc 'vs' nữa, vì Bot đã lọc theo ý bạn ở trên server rồi
+                        if (url && url.startsWith('http')) {
                             html += `<div class="ch" onclick="play('${url}')">${name}</div>`;
-                            count++;
                         }
                     }
                 }
-                list.innerHTML = html || '<div class="ch">Không tìm thấy kênh phù hợp!</div>';
-            } catch (e) { list.innerHTML = '<div class="ch">Lỗi kết nối link M3U!</div>'; }
+                list.innerHTML = html || '<div class="ch">Danh sách trống!</div>';
+            } catch (e) { list.innerHTML = '<div class="ch">Lỗi kết nối M3U!</div>'; }
         }
 
         function play(url) {
@@ -70,8 +37,11 @@
                 const hls = new Hls();
                 hls.loadSource(url);
                 hls.attachMedia(v);
-            } else { v.src = url; }
-            v.play();
+                hls.on(Hls.Events.MANIFEST_PARSED, () => v.play());
+            } else { 
+                v.src = url; 
+                v.play();
+            }
         }
 
         function showMenu() {
@@ -82,5 +52,3 @@
 
         load();
     </script>
-</body>
-</html>
