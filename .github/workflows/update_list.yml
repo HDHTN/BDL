@@ -1,0 +1,30 @@
+name: Update IPTV List
+on:
+  schedule:
+    - cron: '0 0 * * *' # Tự động chạy lúc 12h đêm
+  workflow_dispatch: # Nút bấm để bạn chạy tay khi cần
+
+jobs:
+  filter:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Lay va loc file theo tu khoa
+        run: |
+          # 1. Tải file khổng lồ về (Bạn có thể thay link trong ngoặc kép này)
+          curl -L "https://raw.githubusercontent.com/minhtan001/IPTV-Auto/refs/heads/playlists/all.m3u" > raw.m3u
+          
+          # 2. Tạo file mới
+          echo "#EXTM3U" > hfb_list.m3u
+          
+          # 3. LỌC THEO TỪ KHÓA (Bạn thích từ nào thì viết thêm vào sau dấu | )
+          # Ở đây tôi đang để: vtv, bóng đá, sport, cartoon, hbo, phim
+          grep -Ei "vs" -A 1 raw.m3u >> hfb_list.m3u
+          
+      - name: Day file len lai GitHub
+        run: |
+          git config --global user.name 'Bot-Minh-Chau'
+          git config --global user.email 'bot@github.com'
+          git add hfb_list.m3u
+          git commit -m "Bot da loc xong kenh moi" || exit 0
+          git push
