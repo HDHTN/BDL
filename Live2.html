@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Siêu Nhẹ</title>
+    <style>
+        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        
+        /* Giao diện danh sách kênh */
+        #list-screen { padding: 10px; padding-bottom: 50px; }
+        .channel-box { 
+            background: #222; margin-bottom: 12px; padding: 18px; 
+            font-size: 22px; border-radius: 8px; cursor: pointer; 
+            border-left: 6px solid #e50914; 
+        }
+        .channel-box:active { background: #444; }
+        
+        /* Giao diện xem video */
+        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
+    </style>
+</head>
+<body>
+
+    <div id="list-screen">
+        <h2 id="status-text" style="text-align:center; color: #00ff00;">Đang tải dữ liệu...</h2>
+        <div id="channels-container"></div>
+    </div>
+
+    <div id="player-screen">
+        <video id="tv-screen" controls playsinline autoplay>
+            <source id="video-source" src="" type="application/x-mpegURL">
+            Trình duyệt TV của bạn quá cũ, không hỗ trợ xem video.
+        </video>
+    </div>
+
+    <script>
+        var sourceUrl = 'https://raw.githubusercontent.com/HDHTN/BDL/main/hfb_list.m3u';
+        
+        var listScreen = document.getElementById('list-screen');
+        var playerScreen = document.getElementById('player-screen');
+        var channelsContainer = document.getElementById('channels-container');
+        var statusText = document.getElementById('status-text');
+        
+        var video = document.getElementById('tv-screen');
+        var videoSource = document.getElementById('video-source');
+
+        // --- PHẦN TẢI DANH SÁCH ---
+        function fetchChannels() {
+            var finalUrl = sourceUrl + '?t=' + new Date().getTime();
+            fetch(finalUrl)
+                .then(function(response) {
+                    if (!response.ok) throw new Error('Từ chối kết nối');
+                    return response.text();
+                })
+                .then(function(text) {
+                    processData(text);
+                })
+                .catch(function(error) {
+                    statusText.innerHTML = '<span style="color:red">Lỗi tải danh sách: ' + error.message + '</span>';
+                });
+        }
+
+        function processData(text) {
+            var lines = text.split('\n');
+            var htmlOutput = '';
+            var tempName = "Kênh không tên";
+            var count = 0;
+
+            for (var i = 0; i < lines.length; i++) {
+                var line = lines[i].trim();
+                if (line.indexOf('#EXTINF') === 0) {
+                    var commaIndex = line.indexOf(',');
+                    if (commaIndex !== -1) {
+                        tempName = line.substring(commaIndex + 1).trim();
+                    }
+                } 
+                else if (line.indexOf('http') === 0) {
+                    htmlOutput += '<div class="channel-box" onclick="playChannel(\'' + line + '\')">' + tempName + '</div>';
+                    tempName = "Kênh không tên"; 
+                    count++;
+                }
+            }
+
+            if (count > 0) {
+                statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' kênh</span>';
+                statusText.style.textAlign = 'left';
+                channelsContainer.innerHTML = htmlOutput;
+            } else {
+                statusText.innerHTML = '<span style="color:yellow">File M3U chưa có link video hợp lệ.</span>';
+            }
+        }
+
+        // --- PHẦN PHÁT VIDEO ĐÃ ĐƯỢC NÂNG CẤP ---
+        function playChannel(streamUrl) {
+            listScreen.style.display = 'none';
+            playerScreen.style.display = 'block';
+
+            // 1. Dọn dẹp sạch sẽ luồng cũ để tránh TV bị treo
+            videoSource.src = "";
+            video.removeAttribute('src'); 
+
+            // 2. Phân loại link để lừa trình duyệt TV
+            if (streamUrl.indexOf('.php') !== -1 || streamUrl.indexOf('http://') === 0) {
+                // Nếu là link Socolive (.php) hoặc HTTP không bảo mật: Bỏ qua thẻ <source>, nhét thẳng vào <video>
+                video.src = streamUrl; 
+            } else {
+                // Nếu là link .m3u8 chuẩn: Dùng thẻ <source> nguyên bản
+                videoSource.src = streamUrl;
+            }
+            
+            // 3. Bắt buộc tải và phát luồng mới
+            video.load();
+            var playPromise = video.play();
+            
+            // Bắt lỗi nếu TV đòi người dùng phải tự bấm nút Play
+            if (playPromise !== undefined) {
+                playPromise.catch(function(error) {
+                    console.log("TV yêu cầu tương tác để phát.");
+                });
+            }
+        }
+
+        // Tự động phát lại nếu bị ngắt quãng (Mã chống giật lag mạng yếu)
+        video.addEventListener('error', function() {
+            if (playerScreen.style.display === 'block') {
+                setTimeout(function() {
+                    video.load();
+                    video.play();
+                }, 5000);
+            }
+        }, true);
+
+        // Khởi động
+        fetchChannels();
+    </script>
+</body>
+</html>
