@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run
         run: |
-          curl -L "https://raw.githubusercontent.com/banhbeocute/IPTV-Vietnam/master/HieuhienTV.m3u" > raw.m3u
+          curl -L "https://raw.githubusercontent.com/minhtan001/IPTV-Auto/refs/heads/playlists/all.m3u" > raw.m3u
           echo "#EXTM3U" > hfb_list.m3u
           grep -Ei "vtv|bong da|the thao|sport|cartoon|hbo|phim" -A 1 raw.m3u >> hfb_list.m3u
           git config --global user.name 'bot'
