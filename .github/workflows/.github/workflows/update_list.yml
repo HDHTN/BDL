@@ -19,7 +19,7 @@ jobs:
           
           # 3. LỌC THEO TỪ KHÓA (Bạn thích từ nào thì viết thêm vào sau dấu | )
           # Ở đây tôi đang để: vtv, bóng đá, sport, cartoon, hbo, phim
-          grep -Ei "vtv|bong da|the thao|sport|cartoon|thieu nhi|hbo|phim|vieon" -A 1 raw.m3u >> hfb_list.m3u
+          grep -Ei "vs" -A 1 raw.m3u >> hfb_list.m3u
           
       - name: Day file len lai GitHub
         run: |
