@@ -16,7 +16,7 @@
         }
         .channel-box:active { background: #444; }
         
-        /* Giao diện xem video */
+        /* Giao diện xem video (Đã ẩn nút quay lại) */
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
     </style>
@@ -92,25 +92,26 @@
             }
         }
 
-        // --- PHẦN PHÁT VIDEO ĐÃ ĐƯỢC NÂNG CẤP ---
+        // --- PHẦN PHÁT VIDEO ĐÃ TÍCH HỢP PROXY HTTPS ---
         function playChannel(streamUrl) {
             listScreen.style.display = 'none';
             playerScreen.style.display = 'block';
 
-            // 1. Dọn dẹp sạch sẽ luồng cũ để tránh TV bị treo
+            // Dọn dẹp sạch sẽ luồng cũ
             videoSource.src = "";
             video.removeAttribute('src'); 
 
-            // 2. Phân loại link để lừa trình duyệt TV
-            if (streamUrl.indexOf('.php') !== -1 || streamUrl.indexOf('http://') === 0) {
-                // Nếu là link Socolive (.php) hoặc HTTP không bảo mật: Bỏ qua thẻ <source>, nhét thẳng vào <video>
-                video.src = streamUrl; 
+            // Kiểm tra: Nếu link là HTTP (không bảo mật) như Socolive
+            if (streamUrl.indexOf('http://') === 0) {
+                // Sử dụng máy chủ Proxy (corsproxy.io) để bọc link lại thành HTTPS
+                var proxyUrl = 'https://corsproxy.io/?' + encodeURIComponent(streamUrl);
+                video.src = proxyUrl; 
             } else {
-                // Nếu là link .m3u8 chuẩn: Dùng thẻ <source> nguyên bản
+                // Nếu là link HTTPS chuẩn (như VTV) thì phát bình thường qua thẻ Source
                 videoSource.src = streamUrl;
             }
             
-            // 3. Bắt buộc tải và phát luồng mới
+            // Bắt buộc tải và phát luồng mới
             video.load();
             var playPromise = video.play();
             
