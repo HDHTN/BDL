@@ -1,126 +1,32 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html>
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Siêu Nhẹ</title>
+    <title>TV Stream</title>
     <style>
-        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; overflow-x: hidden; }
-        
-        #list-screen { padding: 10px; padding-bottom: 50px; }
-        .channel-box { background: #222; margin-bottom: 12px; padding: 18px; font-size: 22px; border-radius: 8px; cursor: pointer; border-left: 6px solid #e50914; }
-        .channel-box:active { background: #444; }
-        
-        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
-        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
+        body { margin: 0; background: #000; overflow: hidden; }
+        video { 
+            position: absolute; top: 0; left: 0; 
+            width: 100%; height: 100%; background: #000; 
+        }
     </style>
 </head>
 <body>
 
-    <div id="list-screen">
-        <h2 id="status-text" style="text-align:center; color: #00ff00;">Đang tải dữ liệu...</h2>
-        <div id="channels-container"></div>
-    </div>
-
-    <div id="player-screen">
-        <video id="tv-screen" controls playsinline autoplay>
-            <source id="video-source" src="" type="application/x-mpegURL">
-            Trình duyệt TV của bạn quá cũ.
-        </video>
-    </div>
+    <video id="player" controls autoplay playsinline>
+        <source src=https://vip.opstream90.com/20260131/23537_324e9b29/index.m3u8?sign=7593332584223fd16a0abdb4146992a4" type="application/x-mpegURL">
+        Trình duyệt TV của bạn quá cũ, không hỗ trợ xem video.https://hls.686868.me/live/APAO/index.m3u8?expire=1861774380&sign=a9f31f1ce2dbee900546729bf475cbc6
+    </video>
 
     <script>
-        var sourceUrl = 'https://raw.githubusercontent.com/HDHTN/BDL/main/hfb_list.m3u';
-        
-        var listScreen = document.getElementById('list-screen');
-        var playerScreen = document.getElementById('player-screen');
-        var channelsContainer = document.getElementById('channels-container');
-        var statusText = document.getElementById('status-text');
-        
-        var video = document.getElementById('tv-screen');
-        var videoSource = document.getElementById('video-source');
-
-        function fetchChannels() {
-            var finalUrl = sourceUrl + '?t=' + new Date().getTime();
-            fetch(finalUrl)
-                .then(function(response) {
-                    if (!response.ok) throw new Error('Lỗi mạng');
-                    return response.text();
-                })
-                .then(function(text) { processData(text); })
-                .catch(function(error) {
-                    statusText.innerHTML = '<span style="color:red">Lỗi tải danh sách.</span>';
-                });
-        }
-
-        function processData(text) {
-            var lines = text.split('\n');
-            var htmlOutput = '';
-            var tempName = "Kênh không tên";
-            var count = 0;
-
-            for (var i = 0; i < lines.length; i++) {
-                var line = lines[i].trim();
-                if (line.indexOf('#EXTINF') === 0) {
-                    var commaIndex = line.indexOf(',');
-                    if (commaIndex !== -1) { tempName = line.substring(commaIndex + 1).trim(); }
-                } 
-                else if (line.indexOf('http') === 0) {
-                    htmlOutput += '<div class="channel-box" onclick="playChannel(\'' + line + '\')">' + tempName + '</div>';
-                    tempName = "Kênh không tên"; 
-                    count++;
-                }
-            }
-
-            if (count > 0) {
-                statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' kênh</span>';
-                statusText.style.textAlign = 'left';
-                channelsContainer.innerHTML = htmlOutput;
-            } else {
-                statusText.innerHTML = '<span style="color:yellow">Không có kênh nào.</span>';
-            }
-        }
-
-        // --- PHẦN PHÁT VIDEO CHÍNH THỨC ---
-        function playChannel(streamUrl) {
-            listScreen.style.display = 'none';
-            playerScreen.style.display = 'block';
-
-            videoSource.src = "";
-            video.removeAttribute('src'); 
-
-            // PHÉP THUẬT NẰM Ở ĐÂY: Dịch mã luồng Socolive sang luồng thật
-            if (streamUrl.indexOf('socolive.php?id=') !== -1) {
-                // Tách lấy dãy số ID ở cuối link
-                var parts = streamUrl.split('id=');
-                if (parts.length > 1) {
-                    var id = parts[1].split('&')[0]; // Lấy chuẩn số ID (VD: 291277)
-                    // Ghép thành link M3U8 siêu chuẩn cho TV
-                    streamUrl = 'https://live.inplyr.com/room/' + id + '.m3u8';
-                }
-            }
-
-            // Giao link đã làm sạch cho TV phát
-            videoSource.src = streamUrl;
-            video.load();
-            
-            var playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.catch(function(error) { console.log("Cần tự bấm Play."); });
-            }
-        }
-
-        // Khôi phục nếu đứt mạng
-        video.addEventListener('error', function() {
-            if (playerScreen.style.display === 'block') {
-                setTimeout(function() {
-                    video.load();
-                    video.play();
-                }, 5000);
-            }
+        // Tự động phát lại nếu bị ngắt quãng (dành cho mạng yếu)
+        var v = document.getElementById('player');
+        v.addEventListener('error', function() {
+            setTimeout(function() {
+                v.load();
+                v.play();
+            }, 5000);
         }, true);
-
-        fetchChannels();
     </script>
 </body>
 </html>
