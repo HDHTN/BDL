@@ -1,29 +1,18 @@
 #EXTM3U
-#EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",15h00-17/02 Sydney FC Vs Auckland FC BLV KHỔNG MINH
-https://hls.cdnok9.com/live/KHONGMINH/index.m3u8?expire=1788427256&sign=003a6e74f0efdf441ba4b32785a21d31
+#EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",17h00-17/02 Machida Zelvia Vs Chengdu Rongcheng FC BLV NHỊ KA
+https://hls.cdnok9.com/live/NHIKA1/index.m3u8?expire=1788427256&sign=91d8d858b7cdccb6dd825469190514bd
 --
-#EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",16h00-17/02 JF Khroub(W) Vs MZ Biskra (W) BLV NGŨ CA
-https://hls.cdnok9.com/live/NGUCA/index.m3u8?expire=1788427256&sign=abf9c93edd0de1c833f9ffc14381d526
+#EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",18h30-17/02 Hatayspor Vs 76 Igdir Belediye spor BLV TẦN CA
+https://hls.cdnok9.com/live/TANCA/index.m3u8?expire=1788427256&sign=8ef329a1007f5bbf1c7100b2d7663d68
+--
+#EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",18h00-17/02 Chanthaburi FC Vs JL Chiangmai United FC BLV A TỦA
+https://hls.cdnok9.com/live/ATUA/index.m3u8?expire=1830276060&sign=070cf2d17a1720d3e42600ba2dfaed74
 --
 #EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",17h00-17/02 FC Seoul Vs Hiroshima Sanfrecce BLV TRIỆU TỬ LONG
 https://hls.cdnok9.com/live/TRIEUTULONG/index.m3u8?expire=1788427256&sign=45e4fdc4bdb8472f513ccc78f57f6070
 --
-#EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",17h00-17/02 Machida Zelvia Vs Chengdu Rongcheng FC BLV NHỊ KA
-https://hls.cdnok9.com/live/NHIKA1/index.m3u8?expire=1788427256&sign=91d8d858b7cdccb6dd825469190514bd
-#EXTINF:-1 group-title="Socolive_2",15h00: [BLV TOMMY] Sydney FC vs Auckland FC
-http://sharing.gotdns.ch:8091/socolive.php?id=414317
-#EXTINF:-1 group-title="Socolive_2",15h00: [CR Bưởi] Sydney FC vs Auckland FC
-http://sharing.gotdns.ch:8091/socolive.php?id=387694
-#EXTINF:-1 group-title="Socolive_2",15h00: [BLV MESSI] Sydney FC vs Auckland FC
-http://sharing.gotdns.ch:8091/socolive.php?id=494201
-#EXTINF:-1 group-title="Socolive_2",15h00: [BLV A BỆU] Sydney FC vs Auckland FC
-http://sharing.gotdns.ch:8091/socolive.php?id=484845
-#EXTINF:-1 group-title="Socolive_2",15h00: [BLV KEM] Sydney FC vs Auckland FC
-http://sharing.gotdns.ch:8091/socolive.php?id=513394
-#EXTINF:-1 group-title="Socolive_2",15h00: [BLV ENZO] Sydney FC vs Auckland FC
-http://sharing.gotdns.ch:8091/socolive.php?id=380460
-#EXTINF:-1 group-title="Socolive_2",15h00: [HUNTER] Bendigo W vs Perth Lynx W
-http://sharing.gotdns.ch:8091/socolive.php?id=558264
+#EXTINF:-1 group-title="LuongSon_2" referer="https://ls40.live/",19h00-17/02 Bangkok FC Vs Phrae United FC BLV LÝ ỨNG
+https://hls.cdnok9.com/live/LYUNG1/index.m3u8?expire=1788427256&sign=d5c6932fefdcb98268754f4ccd4aa45d
 #EXTINF:-1 group-title="Socolive_2",17h00: [CR Bưởi] Machida Zelvia vs Chengdu Rongcheng FC
 http://sharing.gotdns.ch:8091/socolive.php?id=387694
 #EXTINF:-1 group-title="Socolive_2",17h00: [LÃO LÂM] Machida Zelvia vs Chengdu Rongcheng FC
@@ -294,20 +283,23 @@ http://sharing.gotdns.ch:8091/socolive.php?id=321443
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",06h00-18/02: [BLV ANH TÀI] Jaguares de Cordoba vs Independiente Santa Fe
 http://sharing.gotdns.ch:8091/socolive.php?id=406865
 --
-#EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",06h00-18/02: [BLV VODKA] Jaguares de Cordoba vs Independiente Santa Fe
-http://sharing.gotdns.ch:8091/socolive.php?id=500605
---
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",06h00-18/02: [BLV TOMMY] Jaguares de Cordoba vs Independiente Santa Fe
 http://sharing.gotdns.ch:8091/socolive.php?id=414317
 --
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",06h00-18/02: [BLV XAVI] Jaguares de Cordoba vs Independiente Santa Fe
 http://sharing.gotdns.ch:8091/socolive.php?id=525090
 --
+#EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",06h00-18/02: [BLV VODKA] Jaguares de Cordoba vs Independiente Santa Fe
+http://sharing.gotdns.ch:8091/socolive.php?id=500605
+--
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",07h30-18/02: [LOGAN] Liverpool URU vs Dep.Independiente Medellin
 http://sharing.gotdns.ch:8091/socolive.php?id=552832
 --
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",07h30-18/02: [A PÁO] Liverpool URU vs Dep.Independiente Medellin
 http://sharing.gotdns.ch:8091/socolive.php?id=235232
+--
+#EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",07h30-18/02: [RED BULL] Liverpool URU vs Dep.Independiente Medellin
+http://sharing.gotdns.ch:8091/socolive.php?id=547345
 --
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",07h30-18/02: [BLV COZY] 2 de Mayo vs Sporting Cristal
 http://sharing.gotdns.ch:8091/socolive.php?id=531989
@@ -353,9 +345,6 @@ http://sharing.gotdns.ch:8091/socolive.php?id=9912114
 --
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",10h00-18/02: [VƯƠNG ANH] Real Espana vs Los Angeles FC
 http://sharing.gotdns.ch:8091/socolive.php?id=548860
---
-#EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",10h00-18/02: [RED BULL] Real Espana vs Los Angeles FC
-http://sharing.gotdns.ch:8091/socolive.php?id=547345
 --
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",10h00-18/02: [SAO LA] Real Espana vs Los Angeles FC
 http://sharing.gotdns.ch:8091/socolive.php?id=462413
@@ -414,14 +403,14 @@ http://sharing.gotdns.ch:8091/socolive.php?id=513394
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",17h00-18/02: [BLV LONG] Melbourne City vs Gangwon FC
 http://sharing.gotdns.ch:8091/socolive.php?id=9912050
 --
-#EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",17h00-18/02: [BLV SINGER] Melbourne City vs Gangwon FC
-http://sharing.gotdns.ch:8091/socolive.php?id=9912102
---
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",17h00-18/02: [CR Bưởi] Melbourne City vs Gangwon FC
 http://sharing.gotdns.ch:8091/socolive.php?id=387694
 --
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",17h00-18/02: [SÙNG A MÚP] Melbourne City vs Gangwon FC
 http://sharing.gotdns.ch:8091/socolive.php?id=9912097
+--
+#EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",17h00-18/02: [RED BULL] Melbourne City vs Gangwon FC
+http://sharing.gotdns.ch:8091/socolive.php?id=547345
 --
 #EXTINF:-1 group-title="Socolive_2" referer="https://socolive12.co/",17h00-18/02: [BLV TOMIA] Shanghai Port FC vs Ulsan HD FC
 http://sharing.gotdns.ch:8091/socolive.php?id=9912008
@@ -616,6 +605,3 @@ https://vs-hls-push-ww-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_news_ch
 --
 https://live.catvod.com/live.php?id=ettvsuper&token=72ba3fe08452560848d48ed4ac7e0fa9aa884a71184be527e3f1f9b0c0e5d0c6%3A1761441368%3AMTE4LjY4LjIxNS4x
 #EXTINF:-1 group-title="TruyenHinh_4",东森财经新闻台
---
-https://7pal.short.gy/VSportUHD
-#EXTINF:-1 group-title="TruyenHinh_4",TNT Sport Ultimate
