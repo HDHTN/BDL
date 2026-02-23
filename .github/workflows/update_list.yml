@@ -2,7 +2,6 @@ name: Update IPTV List
 on:
   workflow_dispatch:
   schedule:
-    # Đã sửa thành chạy 20 phút 1 lần
     - cron: '*/20 * * * *'
 
 jobs:
@@ -14,20 +13,19 @@ jobs:
       - uses: actions/checkout@v3
       - name: Run
         run: |
-          # 1. Tải file gốc
-          curl -L "https://raw.githubusercontent.com/minhtan001/IPTV-Auto/refs/heads/playlists/all.m3u" > raw.m3u
+          # 1. Tải file gốc từ NGUỒN MỚI của chính bạn (thay vì minhtan001)
+          curl -s -L "https://raw.githubusercontent.com/nghehoang007-wq/HFB321/refs/heads/main/all.m3u" > raw.m3u
           
           # 2. Tạo file trắng tiêu chuẩn
           echo "#EXTM3U" > hfb_list.m3u
           
-          # 3. Lọc từ khóa "vs" với cơ chế chống dừng (|| true)
-          # Sử dụng thêm tham số -B 1 nếu file gốc có định dạng tên ở dòng trên link
-          grep -Ei "vs" -A 1 raw.m3u >> hfb_list.m3u || true
+          # 3. Lọc từ khóa "vs" và lấy kèm link ở dòng dưới (-A 1)
+          # THÊM: Dùng grep -v "^--$" để xóa bỏ các dòng gạch ngang rác do lệnh grep sinh ra
+          grep -Ei "vs" -A 1 raw.m3u | grep -v "^--$" >> hfb_list.m3u || true
           
           # 4. Kiểm tra và đẩy file lên GitHub
           git config --global user.name 'bot'
           git config --global user.email 'bot@github.com'
           git add hfb_list.m3u
-          # Commit ngay cả khi file không đổi hoặc rỗng để tránh báo lỗi đỏ
-          git commit -m "update" || echo "No changes to commit"
+          git commit -m "Update from new M3U source" || echo "No changes to commit"
           git push
