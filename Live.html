@@ -13,10 +13,6 @@
         
         #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
         video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
-        
-        /* Nút quay lại hiển thị trên TV */
-        #back-btn { position: absolute; top: 20px; left: 20px; z-index: 101; background: rgba(0,0,0,0.6); color: white; padding: 12px 24px; border: 2px solid white; border-radius: 6px; cursor: pointer; font-size: 20px; display: none; font-weight: bold; }
-        #back-btn:focus { background: #e50914; outline: none; }
     </style>
 </head>
 <body>
@@ -27,7 +23,6 @@
     </div>
 
     <div id="player-screen">
-        <button id="back-btn" onclick="stopPlayer()">🔙 Quay Lại</button>
         <video id="tv-screen" controls playsinline autoplay>
             <source id="video-source" src="" type="application/x-mpegURL">
             Trình duyệt TV của bạn quá cũ.
@@ -50,8 +45,6 @@
         
         var video = document.getElementById('tv-screen');
         var videoSource = document.getElementById('video-source');
-        var backBtn = document.getElementById('back-btn');
-        var hideBtnTimeout;
 
         function fetchChannels() {
             var finalUrl = sourceUrl + '?t=' + new Date().getTime();
@@ -100,9 +93,6 @@
             listScreen.style.display = 'none';
             playerScreen.style.display = 'block';
 
-            // Hiện nút Quay Lại 5 giây rồi ẩn đi cho đỡ vướng màn hình
-            showBackButton();
-
             videoSource.src = "";
             video.removeAttribute('src'); 
 
@@ -135,24 +125,12 @@
             listScreen.style.display = 'block';
         }
 
-        function showBackButton() {
-            backBtn.style.display = 'block';
-            clearTimeout(hideBtnTimeout);
-            hideBtnTimeout = setTimeout(function() { backBtn.style.display = 'none'; }, 5000);
-        }
-
-        // Hiện nút Quay lại khi chạm/di chuyển chuột/bấm phím
-        playerScreen.addEventListener('mousemove', showBackButton);
-        playerScreen.addEventListener('touchstart', showBackButton);
-
         // Bắt sự kiện phím Quay lại trên Remote TV (Esc, Backspace, phím Back WebOS/Tizen)
         window.addEventListener('keydown', function(e) {
             if (playerScreen.style.display === 'block') {
                 if (e.keyCode === 27 || e.keyCode === 8 || e.keyCode === 10009) {
                     e.preventDefault();
                     stopPlayer();
-                } else {
-                    showBackButton();
                 }
             }
         });
