@@ -1,42 +1,11 @@
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Siêu Nhẹ - Đọc JSON</title>
-    <style>
-        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; overflow-x: hidden; }
-        
-        #list-screen { padding: 10px; padding-bottom: 50px; }
-        .channel-box { background: #222; margin-bottom: 12px; padding: 18px; font-size: 22px; border-radius: 8px; cursor: pointer; border-left: 6px solid #e50914; transition: 0.2s; }
-        .channel-box:active, .channel-box:focus { background: #555; outline: 3px solid #fff; }
-        
-        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
-        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
-    </style>
-</head>
-<body>
-
-    <div id="list-screen">
-        <h2 id="status-text" style="text-align:center; color: #00ff00;">Đang tải dữ liệu...</h2>
-        <div id="channels-container"></div>
-    </div>
-
-    <div id="player-screen">
-        <video id="tv-screen" controls playsinline autoplay>
-            <source id="video-source" src="" type="application/x-mpegURL">
-            Trình duyệt TV của bạn quá cũ.
-        </video>
-    </div>
-
-    <script>
+<script>
         // ==========================================
         // CẤU HÌNH CÔNG THỨC LINK CỦA BẠN TẠI ĐÂY
         // ==========================================
         var URL_PREFIX = "https://pull.niues.live/live/stream-";
         var URL_SUFFIX = "_lhd.m3u8";
 
-        // LINK JSON MỚI
+        // LINK JSON
         var sourceUrl = 'https://pub-26bab83910ab4b5781549d12d2f0ef6f.r2.dev/hoiquan.json';
         
         var listScreen = document.getElementById('list-screen');
@@ -48,17 +17,20 @@
         var videoSource = document.getElementById('video-source');
 
         function fetchChannels() {
-            var finalUrl = sourceUrl + '?t=' + new Date().getTime();
-            fetch(finalUrl)
+            // Đã bỏ tham số ?t=... để tránh bị máy chủ R2 chặn gây lỗi mạng
+            fetch(sourceUrl)
                 .then(function(response) {
                     if (!response.ok) throw new Error('Lỗi mạng');
-                    // Chuyển từ response.text() sang response.json()
                     return response.json(); 
                 })
-                .then(function(data) { processData(data); })
+                .then(function(data) { 
+                    processData(data); 
+                })
                 .catch(function(error) {
-                    statusText.innerHTML = '<span style="color:red">Lỗi tải danh sách.</span>';
-                    console.error(error);
+                    // Nếu vẫn lỗi mạng khi xem trên web, có thể do trình duyệt PC chặn CORS. 
+                    // Trên TV thường sẽ không bị lỗi này.
+                    statusText.innerHTML = '<span style="color:red">Lỗi tải danh sách JSON.</span>';
+                    console.error("Lỗi Fetch:", error);
                 });
         }
 
@@ -66,59 +38,66 @@
             var htmlOutput = '';
             var count = 0;
 
-            // Kiểm tra xem JSON có chứa mảng groups không
-            if (data && data.groups) {
-                // Lặp qua từng group (ví dụ: "🔴 Live")
-                for (var g = 0; g < data.groups.length; g++) {
-                    var group = data.groups[g];
-                    
-                    if (group.channels) {
-                        // Lặp qua từng channel trong group
-                        for (var c = 0; c < group.channels.length; c++) {
-                            var channel = group.channels[c];
-                            var tempName = channel.name || "Kênh không tên";
-                            var streamUrl = "";
-
-                            // Đào sâu vào cấu trúc JSON để lấy link m3u8
-                            try {
-                                var sources = channel.sources[0];
-                                var contents = sources.contents[0];
-                                var streams = contents.streams[0];
-                                var links = streams.stream_links;
+            try {
+                if (data && data.groups) {
+                    for (var i = 0; i < data.groups.length; i++) {
+                        var group = data.groups[i];
+                        
+                        if (group.channels) {
+                            for (var j = 0; j < group.channels.length; j++) {
+                                var channel = group.channels[j];
                                 
-                                // Ưu tiên lấy link có thuộc tính default: true, nếu không thì lấy link đầu tiên
-                                var targetLink = links[0];
-                                for (var l = 0; l < links.length; l++) {
-                                    if (links[l].default) {
-                                        targetLink = links[l];
-                                        break;
+                                // Lấy chính xác Tên trận + Giờ (Đã có sẵn trong JSON)
+                                var streamName = channel.name || "Trận đấu không tên";
+                                var streamUrl = "";
+
+                                // Đào an toàn, kiểm tra từng lớp để không làm đứng TV cũ
+                                if (channel.sources && channel.sources.length > 0) {
+                                    var source = channel.sources[0];
+                                    if (source.contents && source.contents.length > 0) {
+                                        var content = source.contents[0];
+                                        if (content.streams && content.streams.length > 0) {
+                                            var stream = content.streams[0];
+                                            if (stream.stream_links && stream.stream_links.length > 0) {
+                                                
+                                                // Lấy link đầu tiên mặc định
+                                                streamUrl = stream.stream_links[0].url;
+                                                
+                                                // Nếu có link báo default: true thì ưu tiên lấy
+                                                for (var k = 0; k < stream.stream_links.length; k++) {
+                                                    if (stream.stream_links[k].default === true) {
+                                                        streamUrl = stream.stream_links[k].url;
+                                                        break;
+                                                    }
+                                                }
+                                            }
+                                        }
                                     }
                                 }
-                                streamUrl = targetLink.url;
-                            } catch (e) {
-                                console.log("Không tìm thấy link cho kênh:", tempName);
-                            }
 
-                            // Nếu lấy được link thành công thì in ra màn hình
-                            if (streamUrl) {
-                                htmlOutput += '<div class="channel-box" tabindex="0" onclick="playChannel(\'' + streamUrl + '\')" onkeypress="if(event.keyCode==13) playChannel(\'' + streamUrl + '\')">' + tempName + '</div>';
-                                count++;
+                                // Nếu tìm được link m3u8 thì mới in ra màn hình
+                                if (streamUrl) {
+                                    htmlOutput += '<div class="channel-box" tabindex="0" onclick="playChannel(\'' + streamUrl + '\')" onkeypress="if(event.keyCode==13) playChannel(\'' + streamUrl + '\')">' + streamName + '</div>';
+                                    count++;
+                                }
                             }
                         }
                     }
                 }
+            } catch (e) {
+                console.error("Lỗi bóc tách JSON:", e);
             }
 
             if (count > 0) {
-                statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' kênh</span>';
+                statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' luồng phát</span>';
                 statusText.style.textAlign = 'left';
                 channelsContainer.innerHTML = htmlOutput;
             } else {
-                statusText.innerHTML = '<span style="color:yellow">Không có kênh nào.</span>';
+                statusText.innerHTML = '<span style="color:yellow">Không có luồng phát nào hôm nay.</span>';
             }
         }
 
-        // --- PHẦN PHÁT VIDEO CHÍNH THỨC ---
+        // --- PHẦN PHÁT VIDEO GIỮ NGUYÊN ---
         function playChannel(streamUrl) {
             listScreen.style.display = 'none';
             playerScreen.style.display = 'block';
@@ -126,7 +105,6 @@
             videoSource.src = "";
             video.removeAttribute('src'); 
 
-            // PHÉP THUẬT NẰM Ở ĐÂY: Dịch mã linh hoạt
             if (streamUrl.indexOf('.m3u8') === -1) {
                 var match = streamUrl.match(/(\d{5,8})/);
                 if (match) {
@@ -135,7 +113,6 @@
                 }
             }
 
-            // Giao link đã xử lý cho TV phát
             videoSource.src = streamUrl;
             video.load();
             
@@ -154,7 +131,6 @@
             listScreen.style.display = 'block';
         }
 
-        // Bắt sự kiện phím Quay lại trên Remote TV
         window.addEventListener('keydown', function(e) {
             if (playerScreen.style.display === 'block') {
                 if (e.keyCode === 27 || e.keyCode === 8 || e.keyCode === 10009) {
@@ -164,7 +140,6 @@
             }
         });
 
-        // Khôi phục nếu đứt mạng
         video.addEventListener('error', function() {
             if (playerScreen.style.display === 'block') {
                 setTimeout(function() {
@@ -176,5 +151,3 @@
 
         fetchChannels();
     </script>
-</body>
-</html>
