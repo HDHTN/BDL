@@ -36,9 +36,9 @@
         var URL_PREFIX = "https://pull.niues.live/live/stream-";
         var URL_SUFFIX = "_lhd.m3u8";
 
-        // Sử dụng corsproxy.io - Trạm trung chuyển tốc độ cao, ít bị nghẽn
+       // Dùng Codetabs Proxy để vượt CORS, thường chỉ mất 1-2 giây
         var originalUrl = 'https://pub-26bab83910ab4b5781549d12d2f0ef6f.r2.dev/hoiquan.json?t=' + new Date().getTime();
-        var sourceUrl = 'https://corsproxy.io/?' + encodeURIComponent(originalUrl);
+        var sourceUrl = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(originalUrl);
         
         var listScreen = document.getElementById('list-screen');
         var playerScreen = document.getElementById('player-screen');
