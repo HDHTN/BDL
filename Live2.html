@@ -36,8 +36,10 @@
         var URL_PREFIX = "https://pull.niues.live/live/stream-";
         var URL_SUFFIX = "_lhd.m3u8";
 
-        // LINK ĐỌC TỪ JSON
-        var sourceUrl = 'https://pub-26bab83910ab4b5781549d12d2f0ef6f.r2.dev/hoiquan.json';
+        // Dùng trạm trung chuyển AllOrigins để vượt rào CORS khi chạy trên Github Pages
+        // Có gắn thêm tham số thời gian để luôn lấy danh sách mới nhất, không bị lưu bộ nhớ đệm
+        var originalUrl = 'https://pub-26bab83910ab4b5781549d12d2f0ef6f.r2.dev/hoiquan.json?t=' + new Date().getTime();
+        var sourceUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(originalUrl);
         
         var listScreen = document.getElementById('list-screen');
         var playerScreen = document.getElementById('player-screen');
@@ -47,40 +49,35 @@
         var video = document.getElementById('tv-screen');
         var videoSource = document.getElementById('video-source');
 
-        // THAY ĐỔI 1: Lấy dữ liệu JSON thay vì Text
         function fetchChannels() {
-            var finalUrl = sourceUrl + '?t=' + new Date().getTime();
-            fetch(finalUrl)
+            fetch(sourceUrl)
                 .then(function(response) {
-                    if (!response.ok) throw new Error('Lỗi mạng');
-                    return response.json(); // Đọc file dưới dạng JSON
+                    if (!response.ok) throw new Error('Mã lỗi máy chủ: ' + response.status);
+                    return response.json(); 
                 })
                 .then(function(data) { processData(data); })
                 .catch(function(error) {
-                    statusText.innerHTML = '<span style="color:red">Lỗi tải danh sách.</span>';
+                    statusText.innerHTML = '<span style="color:red">Lỗi tải danh sách: ' + error.message + '</span>';
                     console.log("Chi tiết lỗi:", error);
                 });
         }
 
-        // THAY ĐỔI 2: Thuật toán dò tìm tên và link m3u8 trong file JSON
         function processData(data) {
             var htmlOutput = '';
             var count = 0;
 
             try {
-                // Duyệt qua mảng groups
                 if (data && data.groups) {
                     for (var i = 0; i < data.groups.length; i++) {
                         var channels = data.groups[i].channels;
                         
-                        // Duyệt qua mảng channels
                         if (channels) {
                             for (var j = 0; j < channels.length; j++) {
                                 var c = channels[j];
-                                var streamName = c.name || "Kênh không tên";
+                                var streamName = c.name || "Trận đấu không tên";
                                 var streamUrl = "";
 
-                                // Đi sâu vào các lớp JSON để lấy URL m3u8
+                                // Đào sâu vào các lớp cấu trúc JSON để tìm link m3u8
                                 if (c.sources && c.sources[0] && 
                                     c.sources[0].contents && c.sources[0].contents[0] && 
                                     c.sources[0].contents[0].streams && c.sources[0].contents[0].streams[0] && 
@@ -89,9 +86,9 @@
                                     var links = c.sources[0].contents[0].streams[0].stream_links;
                                     
                                     if (links.length > 0) {
-                                        streamUrl = links[0].url; // Lấy link đầu tiên làm dự phòng
+                                        streamUrl = links[0].url; // Mặc định lấy link đầu tiên
                                         
-                                        // Ưu tiên lấy link có default: true
+                                        // Ưu tiên lấy link có cờ default: true
                                         for (var k = 0; k < links.length; k++) {
                                             if (links[k].default === true) {
                                                 streamUrl = links[k].url;
@@ -101,7 +98,7 @@
                                     }
                                 }
 
-                                // Nếu tìm thấy link thì render y hệt code cũ của bạn
+                                // Nếu lấy được link thành công, in ra giao diện
                                 if (streamUrl) {
                                     htmlOutput += '<div class="channel-box" tabindex="0" onclick="playChannel(\'' + streamUrl + '\')" onkeypress="if(event.keyCode==13) playChannel(\'' + streamUrl + '\')">' + streamName + '</div>';
                                     count++;
@@ -114,18 +111,17 @@
                 console.log("Lỗi phân tích JSON:", e);
             }
 
-            // Hiển thị giống hệt code gốc
             if (count > 0) {
-                statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' kênh</span>';
+                statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' luồng phát</span>';
                 statusText.style.textAlign = 'left';
                 channelsContainer.innerHTML = htmlOutput;
             } else {
-                statusText.innerHTML = '<span style="color:yellow">Không có kênh nào.</span>';
+                statusText.innerHTML = '<span style="color:yellow">Không có luồng phát nào.</span>';
             }
         }
 
         // ==============================================================
-        // PHẦN PHÁT VIDEO VÀ BẮT PHÍM ĐƯỢC GIỮ NGUYÊN 100% TỪ CODE GỐC
+        // PHẦN PHÁT VIDEO VÀ BẮT PHÍM TRÊN REMOTE TV ĐƯỢC GIỮ NGUYÊN
         // ==============================================================
         function playChannel(streamUrl) {
             listScreen.style.display = 'none';
@@ -134,6 +130,7 @@
             videoSource.src = "";
             video.removeAttribute('src'); 
 
+            // Thuật toán dịch link linh hoạt của bạn
             if (streamUrl.indexOf('.m3u8') === -1) {
                 var match = streamUrl.match(/(\d{5,8})/);
                 if (match) {
@@ -147,7 +144,7 @@
             
             var playPromise = video.play();
             if (playPromise !== undefined) {
-                playPromise.catch(function(error) { console.log("Cần tự bấm Play."); });
+                playPromise.catch(function(error) { console.log("Trình duyệt yêu cầu tự bấm Play."); });
             }
         }
 
@@ -160,6 +157,7 @@
             listScreen.style.display = 'block';
         }
 
+        // Thoát bằng phím Back / Esc trên điều khiển TV
         window.addEventListener('keydown', function(e) {
             if (playerScreen.style.display === 'block') {
                 if (e.keyCode === 27 || e.keyCode === 8 || e.keyCode === 10009) {
@@ -169,6 +167,7 @@
             }
         });
 
+        // Tự động khôi phục luồng nếu đứt mạng
         video.addEventListener('error', function() {
             if (playerScreen.style.display === 'block') {
                 setTimeout(function() {
@@ -178,6 +177,7 @@
             }
         }, true);
 
+        // Chạy khởi tạo ngay khi mở trang
         fetchChannels();
     </script>
 </body>
