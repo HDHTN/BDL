@@ -1,10 +1,42 @@
-<script>
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Siêu Nhẹ</title>
+    <style>
+        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        
+        #list-screen { padding: 10px; padding-bottom: 50px; }
+        .channel-box { background: #222; margin-bottom: 12px; padding: 18px; font-size: 22px; border-radius: 8px; cursor: pointer; border-left: 6px solid #e50914; transition: 0.2s; }
+        .channel-box:active, .channel-box:focus { background: #555; outline: 3px solid #fff; }
+        
+        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
+    </style>
+</head>
+<body>
+
+    <div id="list-screen">
+        <h2 id="status-text" style="text-align:center; color: #00ff00;">Đang tải dữ liệu...</h2>
+        <div id="channels-container"></div>
+    </div>
+
+    <div id="player-screen">
+        <video id="tv-screen" controls playsinline autoplay>
+            <source id="video-source" src="" type="application/x-mpegURL">
+            Trình duyệt TV của bạn quá cũ.
+        </video>
+    </div>
+
+    <script>
         // ==========================================
         // CẤU HÌNH CÔNG THỨC LINK
         // ==========================================
         var URL_PREFIX = "https://pull.niues.live/live/stream-";
         var URL_SUFFIX = "_lhd.m3u8";
 
+        // Vượt rào CORS (Dùng Proxy AllOrigins cho Github Pages)
         var originalUrl = 'https://pub-26bab83910ab4b5781549d12d2f0ef6f.r2.dev/hoiquan.json?t=' + new Date().getTime();
         var sourceUrl = 'https://api.allorigins.win/raw?url=' + encodeURIComponent(originalUrl);
         
@@ -49,7 +81,7 @@
                     var c = channels[j];
                     var streamUrl = "";
 
-                    // Đào sâu lấy link m3u8 bằng if (Nhanh hơn try-catch rất nhiều)
+                    // Đào sâu lấy link m3u8 bằng if (Nhanh hơn try-catch rất nhiều trên TV cũ)
                     var sources = c.sources;
                     if (sources && sources.length > 0) {
                         var contents = sources[0].contents;
@@ -80,7 +112,7 @@
                 }
             }
 
-            // Ép TV kết xuất HTML 1 lần duy nhất
+            // Ép TV kết xuất HTML 1 lần duy nhất để không giật lag
             channelsContainer.innerHTML = htmlOutput;
             
             // XÓA SẠCH DỮ LIỆU JSON KHỎI RAM NGAY LẬP TỨC
@@ -96,7 +128,7 @@
         }
 
         // ==========================================
-        // PHẦN PHÁT VIDEO GIỮ NGUYÊN
+        // PHẦN PHÁT VIDEO GIỮ NGUYÊN 100% CỦA BẠN
         // ==========================================
         function playChannel(streamUrl) {
             listScreen.style.display = 'none';
@@ -145,3 +177,5 @@
 
         fetchChannels();
     </script>
+</body>
+</html>
