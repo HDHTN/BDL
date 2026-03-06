@@ -1,24 +1,4 @@
 #EXTM3U
-#EXTINF:-1 group-title="Socolive",Socolive 10h35-06/03: [HUNTER] Denver Nuggets vs Los Angeles Lakers
-https://live.inplyr.com/room/558264.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 10h35-06/03: [BRIAN] Denver Nuggets vs Los Angeles Lakers
-https://live.inplyr.com/room/9912106.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 10h35-06/03: [A CHÈ] Denver Nuggets vs Los Angeles Lakers
-https://live.inplyr.com/room/356042.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 10h35-06/03: [CHAN SENA] Sacramento Kings vs New Orleans Pelicans
-https://live.inplyr.com/room/9912115.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 10h35-06/03: [BLV HENRY] Sacramento Kings vs New Orleans Pelicans
-https://live.inplyr.com/room/9912112.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 12h30-06/03: [BLV KEM] Adelaide United FC Youth vs White City Woodville
-https://live.inplyr.com/room/513394.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 12h30-06/03: [TẠ BIÊN GIỚI] Adelaide United FC Youth vs White City Woodville
-https://live.inplyr.com/room/9912108.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 12h30-06/03: [BLV TOMMY] Adelaide United FC Youth vs White City Woodville
-https://live.inplyr.com/room/414317.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 12h30-06/03: [CR Bưởi] Adelaide United FC Youth vs White City Woodville
-https://live.inplyr.com/room/387694.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 12h30-06/03: [BLV PIRLO] Adelaide United FC Youth vs White City Woodville
-https://live.inplyr.com/room/351530.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h00-06/03: [BLV 7UP] Uzbekistan Women vs China Women
 https://live.inplyr.com/room/534219.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h00-06/03: [CÚ ĐÊM] Uzbekistan Women vs China Women
@@ -43,6 +23,8 @@ https://live.inplyr.com/room/9912108.m3u8
 https://live.inplyr.com/room/494201.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h35-06/03: [LOKA] Adelaide United vs Wellington Phoenix
 https://live.inplyr.com/room/589848.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 15h35-06/03: [BLV A BỆU] Adelaide United vs Wellington Phoenix
+https://live.inplyr.com/room/484845.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h45-06/03: [BLV CHIVAS] Dandenong City SC vs Caroline Springs George Cross
 https://live.inplyr.com/room/485739.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h45-06/03: [BLV LUCAS] Sutherland Sharks vs Western Sydney Wanderers AM
@@ -77,8 +59,6 @@ https://live.inplyr.com/room/472241.m3u8
 https://live.inplyr.com/room/552832.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 17h00-06/03: [BLV KAN] Quang Ninh vs Truong Tuoi Dong Nai
 https://live.inplyr.com/room/283501.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 17h00-06/03: [BLV A BỆU] Quang Ninh vs Truong Tuoi Dong Nai
-https://live.inplyr.com/room/484845.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 17h00-06/03: [LÃO LÂM] Quang Ninh vs Truong Tuoi Dong Nai
 https://live.inplyr.com/room/527384.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 17h00-06/03: [BLV WUKONG] Quang Ninh vs Truong Tuoi Dong Nai
@@ -105,12 +85,12 @@ https://live.inplyr.com/room/9912097.m3u8
 https://live.inplyr.com/room/560690.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h30-06/03: [Lửng Mật] Odisha FC vs Mohun Bagan Super Giant
 https://live.inplyr.com/room/566705.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 18h30-06/03: [BLV ADAM] Odisha FC vs Mohun Bagan Super Giant
-https://live.inplyr.com/room/336303.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h30-06/03: [MR BÍCH] Odisha FC vs Mohun Bagan Super Giant
 https://live.inplyr.com/room/285067.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h30-06/03: [BLV VOI] Odisha FC vs Mohun Bagan Super Giant
 https://live.inplyr.com/room/9912114.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 18h30-06/03: [VỊT BẠC] Odisha FC vs Mohun Bagan Super Giant
+https://live.inplyr.com/room/474421.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h35-06/03: [BLV PIRLO] Chengdu Rongcheng vs Shenzhen Peng City
 https://live.inplyr.com/room/351530.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h35-06/03: [BLV KEM] Chengdu Rongcheng vs Shenzhen Peng City
@@ -221,14 +201,14 @@ https://live.inplyr.com/room/592799.m3u8
 https://live.inplyr.com/room/9912114.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 00h00-07/03: [RABBIT] Sakaryaspor vs Adana Demirspor
 https://live.inplyr.com/room/596191.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 00h30-07/03: [SÙNG A MÚP] SV Elversberg vs 1. FC Magdeburg
-https://live.inplyr.com/room/9912097.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 00h30-07/03: [BLV ALEX] SV Elversberg vs 1. FC Magdeburg
 https://live.inplyr.com/room/532081.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 00h30-07/03: [BLV TOMIA] SV Elversberg vs 1. FC Magdeburg
 https://live.inplyr.com/room/9912008.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 00h30-07/03: [BLV LONG] SV Elversberg vs 1. FC Magdeburg
 https://live.inplyr.com/room/9912050.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 00h30-07/03: [BLV ROBBEN] SV Elversberg vs 1. FC Magdeburg
+https://live.inplyr.com/room/527383.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 00h30-07/03: [CR Bưởi] Schalke 04 vs Arminia Bielefeld
 https://live.inplyr.com/room/387694.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 00h30-07/03: [BLV ANH TÀI] Schalke 04 vs Arminia Bielefeld
@@ -339,12 +319,12 @@ https://live.inplyr.com/room/372746.m3u8
 https://live.inplyr.com/room/557845.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 08h30-07/03: [BLV TOMMY] Deportivo Cali vs Deportiva Once Caldas
 https://live.inplyr.com/room/414317.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 08h30-07/03: [BLV TAP] Deportivo Cali vs Deportiva Once Caldas
-https://live.inplyr.com/room/9912041.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 08h30-07/03: [BLV ROBBEN] Deportivo Cali vs Deportiva Once Caldas
 https://live.inplyr.com/room/527383.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 08h30-07/03: [BLV ĐỐM] Deportivo Cali vs Deportiva Once Caldas
 https://live.inplyr.com/room/9912110.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 08h30-07/03: [THE KOP] Deportivo Cali vs Deportiva Once Caldas
+https://live.inplyr.com/room/581585.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 09h30-07/03: [HUNTER] San Antonio Spurs vs Los Angeles Clippers
 https://live.inplyr.com/room/558264.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 09h30-07/03: [BRIAN] San Antonio Spurs vs Los Angeles Clippers
@@ -391,8 +371,6 @@ https://live.inplyr.com/room/427562.m3u8
 https://live.inplyr.com/room/485739.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [TẠ BIÊN GIỚI] Chinese Taipei Women vs Vietnam Women
 https://live.inplyr.com/room/9912108.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [BLV TAP] Chinese Taipei Women vs Vietnam Women
-https://live.inplyr.com/room/9912041.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [THẠCH TÚ] Chinese Taipei Women vs Vietnam Women
 https://live.inplyr.com/room/344370.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [BLV PIRLO] Chinese Taipei Women vs Vietnam Women
@@ -401,6 +379,8 @@ https://live.inplyr.com/room/351530.m3u8
 https://live.inplyr.com/room/9912110.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [BLV BÉO] Chinese Taipei Women vs Vietnam Women
 https://live.inplyr.com/room/459401.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [LOKA] Chinese Taipei Women vs Vietnam Women
+https://live.inplyr.com/room/589848.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [BLV Hổ Lùn] Ulsan HD FC vs FC Seoul
 https://live.inplyr.com/room/308080.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 12h00-07/03: [THE KOP] Ulsan HD FC vs FC Seoul
@@ -415,8 +395,8 @@ https://live.inplyr.com/room/564362.m3u8
 https://live.inplyr.com/room/372746.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 13h00-07/03: [VỊT BẠC] Cerezo Osaka vs Shimizu S-Pulse
 https://live.inplyr.com/room/474421.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 13h00-07/03: [BLV XAVI] Cerezo Osaka vs Shimizu S-Pulse
-https://live.inplyr.com/room/525090.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 13h00-07/03: [BLV PEWPEW] Cerezo Osaka vs Shimizu S-Pulse
+https://live.inplyr.com/room/9912015.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 13h00-07/03: [TAM MAO] Newcastle Jets vs Western Sydney
 https://live.inplyr.com/room/9912100.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 13h00-07/03: [RICKHANTER] Newcastle Jets vs Western Sydney
@@ -449,8 +429,8 @@ https://live.inplyr.com/room/9912106.m3u8
 https://live.inplyr.com/room/9912115.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 14h30-07/03: [GOAT] Tianjin Jinmen Tiger vs Chongqing Tonglianglong
 https://live.inplyr.com/room/585206.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 14h30-07/03: [THE KOP] Tianjin Jinmen Tiger vs Chongqing Tonglianglong
-https://live.inplyr.com/room/581585.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 14h30-07/03: [BLV KAN] Tianjin Jinmen Tiger vs Chongqing Tonglianglong
+https://live.inplyr.com/room/283501.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 14h30-07/03: [BLV ENZO] Shandong Taishan FC vs Liaoning Tieren
 https://live.inplyr.com/room/380460.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 14h30-07/03: [BLV SINGER] Shandong Taishan FC vs Liaoning Tieren
@@ -473,8 +453,6 @@ https://live.inplyr.com/room/235232.m3u8
 https://live.inplyr.com/room/304148.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h35-07/03: [TAM MAO] Sydney FC vs Melbourne Victory
 https://live.inplyr.com/room/9912100.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 15h35-07/03: [BLV TAP] Sydney FC vs Melbourne Victory
-https://live.inplyr.com/room/9912041.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h35-07/03: [BLV MESSI] Sydney FC vs Melbourne Victory
 https://live.inplyr.com/room/494201.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 15h35-07/03: [BLV ĐỐM] Sydney FC vs Melbourne Victory
@@ -523,8 +501,6 @@ https://live.inplyr.com/room/380460.m3u8
 https://live.inplyr.com/room/9912102.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h00-07/03: [LOKA] Ninh Binh FC vs SHB Da Nang
 https://live.inplyr.com/room/589848.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 18h00-07/03: [SÙNG A MÚP] Ninh Binh FC vs SHB Da Nang
-https://live.inplyr.com/room/9912097.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h00-07/03: [BLV XO] Song Lam Nghe An vs XM Hai Phong FC
 https://live.inplyr.com/room/472241.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h00-07/03: [BLV SATIVA] Song Lam Nghe An vs XM Hai Phong FC
@@ -555,8 +531,8 @@ https://live.inplyr.com/room/427562.m3u8
 https://live.inplyr.com/room/564362.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h00-07/03: [BLV WUKONG] 1. FC Nürnberg vs Fortuna Dusseldorf
 https://live.inplyr.com/room/511367.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 19h00-07/03: [BLV XAVI] 1. FC Nürnberg vs Fortuna Dusseldorf
-https://live.inplyr.com/room/525090.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 19h00-07/03: [THE KOP] 1. FC Nürnberg vs Fortuna Dusseldorf
+https://live.inplyr.com/room/581585.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h00-07/03: [XUÂN SON] SC Paderborn 07 vs Eintracht Braunschweig
 https://live.inplyr.com/room/501412.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h00-07/03: [BLV VITAMIN] SC Paderborn 07 vs Eintracht Braunschweig
@@ -565,14 +541,14 @@ https://live.inplyr.com/room/400722.m3u8
 https://live.inplyr.com/room/9912108.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h15-07/03: [THẠCH TÚ] Mansfield Town vs Arsenal
 https://live.inplyr.com/room/344370.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 19h15-07/03: [BLV TAP] Mansfield Town vs Arsenal
-https://live.inplyr.com/room/9912041.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h15-07/03: [LÃO LÂM] Mansfield Town vs Arsenal
 https://live.inplyr.com/room/527384.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h15-07/03: [BLV ĐỐM] Mansfield Town vs Arsenal
 https://live.inplyr.com/room/9912110.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h15-07/03: [BLV COCA] Mansfield Town vs Arsenal
 https://live.inplyr.com/room/327159.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 19h15-07/03: [LOGAN] Mansfield Town vs Arsenal
+https://live.inplyr.com/room/552832.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h30-07/03: [A PÁO] Blackburn Rovers vs Portsmouth
 https://live.inplyr.com/room/235232.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h30-07/03: [KÉP] Blackburn Rovers vs Portsmouth
@@ -611,14 +587,14 @@ https://live.inplyr.com/room/9912100.m3u8
 https://live.inplyr.com/room/9912015.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [TẠ BIÊN GIỚI] SC Freiburg vs Bayer 04 Leverkusen
 https://live.inplyr.com/room/9912108.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [SÙNG A MÚP] SC Freiburg vs Bayer 04 Leverkusen
-https://live.inplyr.com/room/9912097.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV XO] SC Freiburg vs Bayer 04 Leverkusen
 https://live.inplyr.com/room/472241.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV A BỆU] SC Freiburg vs Bayer 04 Leverkusen
 https://live.inplyr.com/room/484845.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [CÚ ĐÊM] SC Freiburg vs Bayer 04 Leverkusen
 https://live.inplyr.com/room/547345.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [A PÁO] SC Freiburg vs Bayer 04 Leverkusen
+https://live.inplyr.com/room/235232.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV VIP] 1. FC Heidenheim 1846 vs TSG Hoffenheim
 https://live.inplyr.com/room/491873.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV VOI] 1. FC Heidenheim 1846 vs TSG Hoffenheim
@@ -631,12 +607,12 @@ https://live.inplyr.com/room/991140.m3u8
 https://live.inplyr.com/room/351530.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV CHIVAS] 1. FSV Mainz 05 vs VfB Stuttgart
 https://live.inplyr.com/room/485739.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV XAVI] 1. FSV Mainz 05 vs VfB Stuttgart
-https://live.inplyr.com/room/525090.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV COZY] 1. FSV Mainz 05 vs VfB Stuttgart
 https://live.inplyr.com/room/531989.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BÚA TẠ] 1. FSV Mainz 05 vs VfB Stuttgart
 https://live.inplyr.com/room/570313.m3u8
+#EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV GÔN] 1. FSV Mainz 05 vs VfB Stuttgart
+https://live.inplyr.com/room/445260.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [BLV TOMIA] RB Leipzig vs FC Augsburg
 https://live.inplyr.com/room/9912008.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 21h30-07/03: [THẠCH TÚ] RB Leipzig vs FC Augsburg
@@ -717,8 +693,6 @@ https://live.inplyr.com/room/9912115.m3u8
 https://live.inplyr.com/room/9912099.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 14h30-08/03: [BLV HENRY] Wonju DB vs KoGas
 https://live.inplyr.com/room/9912112.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 14h30-08/03: [CHAN SENA] Wonju DB vs KoGas
-https://live.inplyr.com/room/9912115.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 16h00-08/03: [BRIAN] Enisey vs Lokomotiv Kuban
 https://live.inplyr.com/room/9912106.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 16h00-08/03: [A CHÈ] Enisey vs Lokomotiv Kuban
