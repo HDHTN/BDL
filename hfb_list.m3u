@@ -1,18 +1,4 @@
 #EXTM3U
-#EXTINF:-1 group-title="Socolive",Socolive 16h15-20/03: [BLV GÔN] Oakleigh Cannons vs Caroline Springs George Cross
-https://live.inplyr.com/room/445260.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 16h15-20/03: [A CHÈ] TNT Tropang Giga vs Rain or Shine Elastopainters
-https://live.inplyr.com/room/356042.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 16h15-20/03: [HUNTER] TNT Tropang Giga vs Rain or Shine Elastopainters
-https://live.inplyr.com/room/558264.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 16h30-20/03: [BLV ENZO] Preston Lions vs Avondale FC
-https://live.inplyr.com/room/380460.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 16h30-20/03: [BLV LUCAS] Eastern Suburbs Brisbane vs Gold Coast Knights
-https://live.inplyr.com/room/304148.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 16h30-20/03: [BLV XO] Peninsula Power vs Gold Coast United
-https://live.inplyr.com/room/472241.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 17h00-20/03: [BLV NIBO] Adelaide Comets FC vs Adelaide United FC Youth
-https://live.inplyr.com/room/372746.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 17h00-20/03: [BLV HENRY] Suwon KT vs KoGas
 https://live.inplyr.com/room/9912112.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 17h00-20/03: [CHAN SENA] Suwon KT vs KoGas
@@ -27,8 +13,6 @@ https://live.inplyr.com/room/534219.m3u8
 https://live.inplyr.com/room/414317.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h00-20/03: [BLV TAP] Dalian Yingbo vs Shanghai Port
 https://live.inplyr.com/room/9912041.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 18h00-20/03: [BLV FIREMAN] Wuxi Wugo vs Shenzhen Juniors
-https://live.inplyr.com/room/991140.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h00-20/03: [BON BON] Wuxi Wugo vs Shenzhen Juniors
 https://live.inplyr.com/room/597924.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 18h00-20/03: [BLV ANH TÀI] FK Kapaz Ganca vs Qarabag
@@ -61,8 +45,6 @@ https://live.inplyr.com/room/484845.m3u8
 https://live.inplyr.com/room/527383.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h00-20/03: [BLV VIP] Guangxi Hengchen vs Ningbo Professional
 https://live.inplyr.com/room/491873.m3u8
-#EXTINF:-1 group-title="Socolive",Socolive 19h00-20/03: [BLV HENRY] Shenzhen vs Xinjiang
-https://live.inplyr.com/room/9912112.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h00-20/03: [HUNTER] Shenzhen vs Xinjiang
 https://live.inplyr.com/room/558264.m3u8
 #EXTINF:-1 group-title="Socolive",Socolive 19h15-20/03: [BLV SATIVA] Cong An Ho Chi Minh City vs Truong Tuoi Dong Nai
