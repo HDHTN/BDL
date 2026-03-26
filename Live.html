@@ -3,175 +3,50 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TV Siêu Nhẹ</title>
+    <title>Cổng Trực Tiếp Bóng Đá</title>
+    
+    <meta http-equiv="refresh" content="0; url=https://[ten-worker-cua-bac].workers.dev">
+
     <style>
-        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; overflow-x: hidden; }
-        
-        #list-screen { padding: 10px; padding-bottom: 50px; }
-        .channel-box { background: #222; margin-bottom: 12px; padding: 18px; font-size: 22px; border-radius: 8px; cursor: pointer; border-left: 6px solid #e50914; transition: 0.2s; }
-        .channel-box:active, .channel-box:focus { background: #555; outline: 3px solid #fff; }
-        
-        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
-        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
+        /* Giao diện chờ màu đen đồng bộ, chống chói mắt khi mở Tivi ban đêm */
+        body { 
+            background-color: #000; 
+            color: #00ff00; 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+            font-family: 'Segoe UI', Tahoma, sans-serif; 
+        }
+        .loader {
+            text-align: center;
+            animation: pulse 1.5s infinite;
+        }
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
     </style>
 </head>
 <body>
 
-    <div id="list-screen">
-        <h2 id="status-text" style="text-align:center; color: #00ff00;">Đang tải dữ liệu...</h2>
-        <div id="channels-container"></div>
-    </div>
-
-    <div id="player-screen">
-        <video id="tv-screen" controls playsinline autoplay>
-            <source id="video-source" src="" type="application/x-mpegURL">
-            Trình duyệt TV của bạn quá cũ.
-        </video>
+    <div class="loader">
+        <h2>🔄 Đang kết nối đến Server Siêu Nhẹ...</h2>
     </div>
 
     <script>
-        // ==========================================
-        // CẤU HÌNH CÔNG THỨC LINK
-        // ==========================================
-        var URL_PREFIX = "https://pull.niues.live/live/stream-";
-        var URL_SUFFIX = "_lhd.m3u8";
-
-       // Dùng Codetabs Proxy để vượt CORS, thường chỉ mất 1-2 giây
-        var originalUrl = 'https://pub-26bab83910ab4b5781549d12d2f0ef6f.r2.dev/hoiquan.json?t=' + new Date().getTime();
-        var sourceUrl = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(originalUrl);
+        // Dùng location.replace để Tivi không lưu trang này vào Lịch sử.
+        // Khi bác ấn Back trên Tivi, nó sẽ thoát hẳn App chứ không bị kẹt lại trang này.
         
-        var listScreen = document.getElementById('list-screen');
-        var playerScreen = document.getElementById('player-screen');
-        var channelsContainer = document.getElementById('channels-container');
-        var statusText = document.getElementById('status-text');
+        // BÁC THAY CÁI LINK WORKER CỦA BÁC VÀO CHỖ NÀY NỮA NHÉ
+        var workerUrl = "https://bdl.nphotos0001.workers.dev/";
         
-        var video = document.getElementById('tv-screen');
-        var videoSource = document.getElementById('video-source');
-
-        function fetchChannels() {
-            fetch(sourceUrl)
-                .then(function(response) {
-                    if (!response.ok) throw new Error(response.status);
-                    return response.json(); 
-                })
-                .then(function(data) { processData(data); })
-                .catch(function(error) {
-                    statusText.innerHTML = '<span style="color:red">Lỗi mạng, vui lòng thử lại.</span>';
-                });
-        }
-
-        // THUẬT TOÁN TỐI ƯU SIÊU NHẸ CHO TV RAM THẤP
-        function processData(data) {
-            var htmlOutput = '';
-            var count = 0;
-            var groups = data.groups;
-
-            if (!groups) {
-                statusText.innerHTML = '<span style="color:yellow">Dữ liệu trống.</span>';
-                return;
-            }
-
-            for (var i = 0, gLen = groups.length; i < gLen; i++) {
-                var channels = groups[i].channels;
-                if (!channels) continue;
-
-                for (var j = 0, cLen = channels.length; j < cLen; j++) {
-                    var c = channels[j];
-                    var streamUrl = "";
-
-                    var sources = c.sources;
-                    if (sources && sources.length > 0) {
-                        var contents = sources[0].contents;
-                        if (contents && contents.length > 0) {
-                            var streams = contents[0].streams;
-                            if (streams && streams.length > 0) {
-                                var links = streams[0].stream_links;
-                                if (links && links.length > 0) {
-                                    
-                                    streamUrl = links[0].url; 
-                                    
-                                    for (var k = 0, lLen = links.length; k < lLen; k++) {
-                                        if (links[k].default === true) {
-                                            streamUrl = links[k].url;
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                    if (streamUrl) {
-                        var streamName = c.name || "Kênh " + (count + 1);
-                        htmlOutput += '<div class="channel-box" tabindex="0" onclick="playChannel(\'' + streamUrl + '\')" onkeypress="if(event.keyCode==13) playChannel(\'' + streamUrl + '\')">' + streamName + '</div>';
-                        count++;
-                    }
-                }
-            }
-
-            channelsContainer.innerHTML = htmlOutput;
-            
-            // Xóa rác, giải phóng RAM
-            data = null;
-            groups = null;
-
-            if (count > 0) {
-                statusText.innerHTML = '<span style="color:orange">Đã tải ' + count + ' luồng phát</span>';
-                statusText.style.textAlign = 'left';
-            } else {
-                statusText.innerHTML = '<span style="color:yellow">Không có luồng phát nào.</span>';
-            }
-        }
-
-        // ==========================================
-        // PHẦN PHÁT VIDEO GIỮ NGUYÊN
-        // ==========================================
-        function playChannel(streamUrl) {
-            listScreen.style.display = 'none';
-            playerScreen.style.display = 'block';
-
-            videoSource.src = "";
-            video.removeAttribute('src'); 
-
-            if (streamUrl.indexOf('.m3u8') === -1) {
-                var match = streamUrl.match(/(\d{5,8})/);
-                if (match) {
-                    var id = match[1];
-                    streamUrl = URL_PREFIX + id + URL_SUFFIX;
-                }
-            }
-
-            videoSource.src = streamUrl;
-            video.load();
-            var playPromise = video.play();
-            if (playPromise !== undefined) { playPromise.catch(function(e) {}); }
-        }
-
-        function stopPlayer() {
-            video.pause();
-            videoSource.src = "";
-            video.removeAttribute('src');
-            video.load();
-            playerScreen.style.display = 'none';
-            listScreen.style.display = 'block';
-        }
-
-        window.addEventListener('keydown', function(e) {
-            if (playerScreen.style.display === 'block') {
-                if (e.keyCode === 27 || e.keyCode === 8 || e.keyCode === 10009) {
-                    e.preventDefault();
-                    stopPlayer();
-                }
-            }
-        });
-
-        video.addEventListener('error', function() {
-            if (playerScreen.style.display === 'block') {
-                setTimeout(function() { video.load(); video.play(); }, 5000);
-            }
-        }, true);
-
-        fetchChannels();
+        setTimeout(function() {
+            window.location.replace(workerUrl);
+        }, 100); // Độ trễ 0.1s để Tivi kịp load màn hình đen
     </script>
+
 </body>
 </html>
