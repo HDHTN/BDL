@@ -2,51 +2,19 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cổng Trực Tiếp Bóng Đá</title>
+    <title>Live TV</title>
     
+    <script>
+        // BÁC THAY LINK WORKER CỦA BÁC VÀO ĐÂY NHÉ
+        window.location.replace("https://[ten-worker-cua-bac].workers.dev");
+    </script>
+
     <meta http-equiv="refresh" content="0; url=https://[ten-worker-cua-bac].workers.dev">
 
     <style>
-        /* Giao diện chờ màu đen đồng bộ, chống chói mắt khi mở Tivi ban đêm */
-        body { 
-            background-color: #000; 
-            color: #00ff00; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            height: 100vh; 
-            margin: 0; 
-            font-family: 'Segoe UI', Tahoma, sans-serif; 
-        }
-        .loader {
-            text-align: center;
-            animation: pulse 1.5s infinite;
-        }
-        @keyframes pulse {
-            0% { opacity: 0.5; }
-            50% { opacity: 1; }
-            100% { opacity: 0.5; }
-        }
+        body { background-color: #000; margin: 0; padding: 0; overflow: hidden; }
     </style>
 </head>
 <body>
-
-    <div class="loader">
-        <h2>🔄 Đang kết nối đến Server Siêu Nhẹ...</h2>
-    </div>
-
-    <script>
-        // Dùng location.replace để Tivi không lưu trang này vào Lịch sử.
-        // Khi bác ấn Back trên Tivi, nó sẽ thoát hẳn App chứ không bị kẹt lại trang này.
-        
-        // BÁC THAY CÁI LINK WORKER CỦA BÁC VÀO CHỖ NÀY NỮA NHÉ
-        var workerUrl = "https://bdl.nphotos0001.workers.dev/";
-        
-        setTimeout(function() {
-            window.location.replace(workerUrl);
-        }, 100); // Độ trễ 0.1s để Tivi kịp load màn hình đen
-    </script>
-
-</body>
+    </body>
 </html>
