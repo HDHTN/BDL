@@ -3,93 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TIVI TỐI GIẢN</title>
+    <title>PHÁT BÓNG ĐÁ TRỰC TIẾP</title>
     <style>
-        /* Giao diện đen tuyền, cực nhẹ cho Tivi */
-        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; overflow: hidden; }
+        /* Tối ưu màn hình đen tuyệt đối, không viền */
+        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
+        video { width: 100%; height: 100%; background: #000; outline: none; }
         
-        #input-screen { text-align: center; width: 90%; max-width: 600px; }
-        
-        input { 
-            width: 100%; padding: 20px; background: #111; color: #00ff00; 
-            border: 2px solid #333; font-size: 20px; border-radius: 10px; 
-            margin-bottom: 20px; outline: none; box-sizing: border-box;
+        /* Chữ thông báo nhỏ khi đang load, tự ẩn sau 3 giây */
+        #loading { 
+            position: fixed; top: 10px; left: 10px; color: #00ff00; 
+            font-family: sans-serif; font-size: 14px; z-index: 10; 
         }
-        input:focus { border-color: #e50914; background: #222; }
-
-        button { 
-            width: 100%; padding: 20px; background: #e50914; color: #fff; 
-            border: none; border-radius: 10px; font-weight: bold; font-size: 24px; cursor: pointer;
-        }
-        button:focus { background: #ff0000; outline: 4px solid #fff; }
-
-        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 100; background: #000; }
-        video { width: 100%; height: 100%; background: #000; }
     </style>
 </head>
 <body>
 
-    <div id="input-screen">
-        <input type="text" id="m3u8-url" placeholder="https://tfuk3graucmttgy31hctogyzdkc3ppbasa4mscwz8w5d3ptwzc3jqcpzs4.100ycdn.com/hqlive.zlylive.com/live/hqtv_blv_phanliem/playlist.m3u8?wsSession=5607d1753b9dccf6a52af36a-177468068158210&wsIPSercert=93868f628490538264992a2811d87a73&wsiphost=local&wsBindIP=1" autofocus>
-        <button id="play-btn" onclick="startPlay()">▶ VÀO XEM NGAY</button>
-        <p style="color: #666; margin-top: 15px;">(Bấm Back/Return trên điều khiển để thoát)</p>
-    </div>
+    <div id="loading">🚀 Đang nạp luồng phát...</div>
 
-    <div id="player-screen">
-        <video id="main-video" controls playsinline autoplay>
-            <source id="video-src" src="" type="application/x-mpegURL">
-        </video>
-    </div>
+    <video id="tv-player" controls playsinline autoplay>
+        <source src="https://tfuk3graucmttgy31hctogyzdkc3ppbasa4mscwz8w5d3ptwzc3jqcpzs4.100ycdn.com/hqlive.zlylive.com/live/hqtv_blv_phanliem/playlist.m3u8?wsSession=5607d1753b9dccf6a52af36a-177468068158210&wsIPSercert=93868f628490538264992a2811d87a73&wsiphost=local&wsBindIP=1" type="application/x-mpegURL">
+        Trình duyệt TV của bạn không hỗ trợ định dạng này.
+    </video>
 
     <script>
-        var inputScreen = document.getElementById('input-screen');
-        var playerScreen = document.getElementById('player-screen');
-        var video = document.getElementById('main-video');
-        var videoSrc = document.getElementById('video-src');
-        var urlInput = document.getElementById('m3u8-url');
+        var video = document.getElementById('tv-player');
 
-        // Hàm kích hoạt phát video
-        function startPlay() {
-            var url = urlInput.value.trim();
-            if (url) {
-                inputScreen.style.display = 'none';
-                playerScreen.style.display = 'block';
-                
-                // Nạp link và chạy
-                video.pause();
-                videoSrc.src = url;
-                video.load();
-                video.play().catch(function(e) {
-                    alert("Lỗi: Link không chạy được hoặc Tivi không hỗ trợ.");
-                    stopPlay();
-                });
-            }
-        }
+        // Tự động phát ngay khi nạp xong
+        window.onload = function() {
+            video.play().catch(function(e) {
+                console.log("Cần tương tác để phát hoặc lỗi link.");
+            });
+            
+            // Ẩn chữ thông báo sau 3 giây cho đỡ ngứa mắt
+            setTimeout(function() {
+                document.getElementById('loading').style.display = 'none';
+            }, 3000);
+        };
 
-        // Hàm dừng phát, quay lại màn hình nhập
-        function stopPlay() {
-            video.pause();
-            videoSrc.src = "";
-            video.load();
-            playerScreen.style.display = 'none';
-            inputScreen.style.display = 'block';
-            urlInput.focus(); // Tự động chọn ô nhập để dán link mới
-        }
-
-        // Bắt sự kiện phím bấm trên Remote Tivi
+        // Bắt phím Back/Return trên điều khiển để thoát hoặc tải lại
         window.addEventListener('keydown', function(e) {
-            // Nhấn Enter khi đang ở ô nhập link
-            if (e.keyCode === 13 && inputScreen.style.display !== 'none') {
-                startPlay();
-            }
-            // Nhấn Back/Return/Esc để thoát video (Mã phím Sony: 8, 27, 10009)
-            if (playerScreen.style.display === 'block') {
-                if (e.keyCode === 8 || e.keyCode === 27 || e.keyCode === 10009) {
-                    e.preventDefault();
-                    stopPlay();
-                }
+            if (e.keyCode === 8 || e.keyCode === 27 || e.keyCode === 10009) {
+                e.preventDefault();
+                // Nếu muốn thoát hẳn trang web, dùng history.back()
+                // Nếu muốn nạp lại trận đấu, dùng location.reload()
+                window.location.reload(); 
             }
         });
+
+        // Tự động thử lại nếu luồng bị ngắt giữa chừng (do mạng yếu)
+        video.addEventListener('error', function() {
+            setTimeout(function() {
+                video.load();
+                video.play();
+            }, 2000);
+        }, true);
     </script>
 </body>
 </html>
