@@ -2,19 +2,126 @@
 <html lang="vi">
 <head>
     <meta charset="UTF-8">
-    <title>Live TV</title>
-    
-    <script>
-        // BÁC THAY LINK WORKER CỦA BÁC VÀO ĐÂY NHÉ
-        window.location.replace("https://[ten-worker-cua-bac].workers.dev");
-    </script>
-
-    <meta http-equiv="refresh" content="0; url=https://[ten-worker-cua-bac].workers.dev">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TV Siêu Nhẹ - Xem Gấp</title>
     <style>
-        body { background-color: #000; margin: 0; padding: 0; overflow: hidden; }
+        body { background: #000; color: #fff; margin: 0; font-family: sans-serif; overflow-x: hidden; }
+        
+        #list-screen { padding: 15px; padding-bottom: 50px; }
+        
+        /* PHẦN NHẬP LINK NHANH */
+        .quick-box { margin-bottom: 25px; padding: 15px; background: #1a1a1a; border-radius: 10px; border: 1px solid #333; }
+        #manual-url { 
+            width: 100%; padding: 12px; box-sizing: border-box; 
+            background: #000; color: #00ff00; border: 1px solid #444; 
+            font-size: 16px; border-radius: 5px; margin-bottom: 10px;
+        }
+        .btn-play { 
+            width: 100%; padding: 15px; background: #e50914; color: #fff; 
+            border: none; border-radius: 5px; font-weight: bold; font-size: 18px; cursor: pointer;
+        }
+        .btn-play:active, .btn-play:focus { background: #ff0000; outline: 3px solid #fff; }
+
+        .channel-box { background: #222; margin-bottom: 12px; padding: 18px; font-size: 20px; border-radius: 8px; cursor: pointer; border-left: 6px solid #e50914; transition: 0.2s; }
+        .channel-box:active, .channel-box:focus { background: #555; outline: 3px solid #fff; }
+        
+        #player-screen { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 100; }
+        video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #000; }
     </style>
 </head>
 <body>
-    </body>
+
+    <div id="list-screen">
+        <div class="quick-box">
+            <input type="text" id="manual-url" placeholder="https://tfuk3graucmttgy31hctogyzdkc3ppbasa4mscwz8w5d3ptwzc3jqcpzs4.100ycdn.com/hqlive.zlylive.com/live/hqtv_blv_phanliem/playlist.m3u8?wsSession=5607d1753b9dccf6a52af36a-177468068158210&wsIPSercert=93868f628490538264992a2811d87a73&wsiphost=local&wsBindIP=1" onkeypress="if(event.keyCode==13) playManual()">
+            <button class="btn-play" onclick="playManual()" tabindex="0">🚀 XEM GẤP TRẬN NÀY</button>
+        </div>
+
+        <h2 id="status-text" style="text-align:center; color: #00ff00; font-size: 18px;">Đang tải danh sách kênh...</h2>
+        <div id="channels-container"></div>
+    </div>
+
+    <div id="player-screen">
+        <video id="tv-screen" controls playsinline autoplay>
+            <source id="video-source" src="" type="application/x-mpegURL">
+            Trình duyệt TV của bạn quá cũ.
+        </video>
+    </div>
+
+    <script>
+        var listScreen = document.getElementById('list-screen');
+        var playerScreen = document.getElementById('player-screen');
+        var channelsContainer = document.getElementById('channels-container');
+        var statusText = document.getElementById('status-text');
+        var video = document.getElementById('tv-screen');
+        var videoSource = document.getElementById('video-source');
+
+        // Hàm xử lý khi bác dán link m3u8 thủ công
+        function playManual() {
+            var url = document.getElementById('manual-url').value.trim();
+            if (url) {
+                playChannel(url);
+            } else {
+                alert("Bác chưa dán link kìa!");
+            }
+        }
+
+        // PHẦN FETCH KÊNH CŨ (Giữ lại để bác vẫn xem được các kênh khác)
+        var originalUrl = 'https://pub-26bab83910ab4b5781549d12d2f0ef6f.r2.dev/hoiquan.json?t=' + new Date().getTime();
+        var sourceUrl = 'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(originalUrl);
+
+        function fetchChannels() {
+            fetch(sourceUrl)
+                .then(function(res) { return res.json(); })
+                .then(function(data) { processData(data); })
+                .catch(function() { statusText.innerText = "Lỗi nạp danh sách tự động."; });
+        }
+
+        function processData(data) {
+            var html = '';
+            var groups = data.groups || [];
+            groups.forEach(function(g) {
+                (g.channels || []).forEach(function(c) {
+                    var url = "";
+                    try { url = c.sources[0].contents[0].streams[0].stream_links[0].url; } catch(e){}
+                    if(url) {
+                        html += '<div class="channel-box" tabindex="0" onclick="playChannel(\''+url+'\')">'+c.name+'</div>';
+                    }
+                });
+            });
+            channelsContainer.innerHTML = html;
+            statusText.innerText = "Dữ liệu đã sẵn sàng!";
+        }
+
+        // HÀM PHÁT CHUNG
+        function playChannel(streamUrl) {
+            listScreen.style.display = 'none';
+            playerScreen.style.display = 'block';
+            video.pause();
+            videoSource.src = streamUrl;
+            video.load();
+            video.play().catch(function(e) {});
+        }
+
+        function stopPlayer() {
+            video.pause();
+            videoSource.src = "";
+            video.load();
+            playerScreen.style.display = 'none';
+            listScreen.style.display = 'block';
+        }
+
+        // Nút BACK trên Remote
+        window.addEventListener('keydown', function(e) {
+            if (playerScreen.style.display === 'block') {
+                if (e.keyCode === 27 || e.keyCode === 8 || e.keyCode === 10009) {
+                    e.preventDefault();
+                    stopPlayer();
+                }
+            }
+        });
+
+        fetchChannels();
+    </script>
+</body>
 </html>
