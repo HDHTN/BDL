@@ -3,60 +3,52 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PHÁT BÓNG ĐÁ TRỰC TIẾP</title>
+    <title>Đang chuyển hướng đến Tivi Bóng Đá...</title>
+    
+    <meta http-equiv="refresh" content="3;url=https://bdl.nphotos0001.workers.dev/">
+    
     <style>
-        /* Tối ưu màn hình đen tuyệt đối, không viền */
-        body, html { margin: 0; padding: 0; width: 100%; height: 100%; background: #000; overflow: hidden; }
-        video { width: 100%; height: 100%; background: #000; outline: none; }
-        
-        /* Chữ thông báo nhỏ khi đang load, tự ẩn sau 3 giây */
-        #loading { 
-            position: fixed; top: 10px; left: 10px; color: #00ff00; 
-            font-family: sans-serif; font-size: 14px; z-index: 10; 
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #0f172a;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            text-align: center;
         }
+        .loader {
+            border: 4px solid #1e293b;
+            border-top: 4px solid #38bdf8;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+        a { color: #38bdf8; text-decoration: none; font-weight: bold; margin-top: 10px; }
+        .btn { background: #3b82f6; color: white; padding: 10px 20px; border-radius: 8px; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="loading">🚀 Đang nạp luồng phát...</div>
-
-    <video id="tv-player" controls playsinline autoplay>
-        <source src="https://tfuk3graucmttgy31hctogyzdkc3ppbasa4mscwz8w5d3ptwzc3jqcpzs4.100ycdn.com/hqlive.zlylive.com/live/hqtv_blv_phanliem/playlist.m3u8?wsSession=5607d1753b9dccf6a52af36a-177468068158210&wsIPSercert=93868f628490538264992a2811d87a73&wsiphost=local&wsBindIP=1" type="application/x-mpegURL">
-        Trình duyệt TV của bạn không hỗ trợ định dạng này.
-    </video>
+    <div class="loader"></div>
+    <h2>Hệ thống đang chuyển hướng...</h2>
+    <p>Vui lòng đợi trong giây lát để kết nối với máy chủ.</p>
+    
+    <p>Nếu trang không tự chuyển, bấm vào đây:</p>
+    <a href="https://URL_WORKER_CUA_BAC.workers.dev" class="btn">VÀO XEM BÓNG ĐÁ</a>
 
     <script>
-        var video = document.getElementById('tv-player');
-
-        // Tự động phát ngay khi nạp xong
-        window.onload = function() {
-            video.play().catch(function(e) {
-                console.log("Cần tương tác để phát hoặc lỗi link.");
-            });
-            
-            // Ẩn chữ thông báo sau 3 giây cho đỡ ngứa mắt
-            setTimeout(function() {
-                document.getElementById('loading').style.display = 'none';
-            }, 3000);
-        };
-
-        // Bắt phím Back/Return trên điều khiển để thoát hoặc tải lại
-        window.addEventListener('keydown', function(e) {
-            if (e.keyCode === 8 || e.keyCode === 27 || e.keyCode === 10009) {
-                e.preventDefault();
-                // Nếu muốn thoát hẳn trang web, dùng history.back()
-                // Nếu muốn nạp lại trận đấu, dùng location.reload()
-                window.location.reload(); 
-            }
-        });
-
-        // Tự động thử lại nếu luồng bị ngắt giữa chừng (do mạng yếu)
-        video.addEventListener('error', function() {
-            setTimeout(function() {
-                video.load();
-                video.play();
-            }, 2000);
-        }, true);
+        // Cách 3: JavaScript - Chuyển hướng nhanh nếu trình duyệt hỗ trợ
+        // Sử dụng setTimeout 2 giây để tạo độ trễ "tự nhiên", tránh bị bot quét
+        setTimeout(function() {
+            window.location.replace("https://URL_WORKER_CUA_BAC.workers.dev");
+        }, 2000);
     </script>
 </body>
 </html>
